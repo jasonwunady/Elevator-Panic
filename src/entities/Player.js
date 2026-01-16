@@ -50,6 +50,14 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.cursors = scene.input.keyboard.createCursorKeys();
         this.kickKey = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
 
+        // WASD controls
+        this.wasd = {
+            W: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),
+            A: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),
+            S: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S),
+            D: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D)
+        };
+
         // Touch controls
         this.setupTouchControls();
     }
@@ -135,8 +143,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     handleMovement() {
         const speed = PLAYER_CONFIG.SPEED;
-        const leftPressed = this.cursors.left.isDown || this.touchControls.left;
-        const rightPressed = this.cursors.right.isDown || this.touchControls.right;
+        const leftPressed = this.cursors.left.isDown || this.wasd.A.isDown || this.touchControls.left;
+        const rightPressed = this.cursors.right.isDown || this.wasd.D.isDown || this.touchControls.right;
 
         if (leftPressed) {
             this.setVelocityX(-speed);
@@ -210,7 +218,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     handleJump() {
-        const jumpPressed = Phaser.Input.Keyboard.JustDown(this.cursors.up) || this.touchControls.jump;
+        const jumpPressed = Phaser.Input.Keyboard.JustDown(this.cursors.up) || Phaser.Input.Keyboard.JustDown(this.wasd.W) || this.touchControls.jump;
 
         if (jumpPressed && this.isGrounded) {
             let jumpVelocity = PLAYER_CONFIG.JUMP_VELOCITY;
@@ -230,7 +238,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     handleKick() {
-        const kickPressed = Phaser.Input.Keyboard.JustDown(this.kickKey) || this.touchControls.kick;
+        const kickPressed = Phaser.Input.Keyboard.JustDown(this.kickKey) || Phaser.Input.Keyboard.JustDown(this.wasd.S) || this.touchControls.kick;
 
         if (kickPressed && !this.kickCooldown) {
             this.performKick();

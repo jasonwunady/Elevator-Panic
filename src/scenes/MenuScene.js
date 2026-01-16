@@ -381,6 +381,7 @@ class MenuScene extends Phaser.Scene {
         const buttons = [
             { text: '▶ START GAME', action: 'start' },
             { text: '👾 MONSTERS', action: 'monsters' },
+            { text: '🏆 ACHIEVEMENTS', action: 'achievements' },
             { text: '🎨 SKINS', action: 'skins' },
             { text: '✨ PARTICLES', action: 'particles' },
             { text: '🗑 DELETE SAVE', action: 'delete' }
@@ -641,6 +642,16 @@ class MenuScene extends Phaser.Scene {
         this.updateMenuSelection();
     }
 
+    hideAchievements() {
+        this.currentMenu = 'main';
+        this.selectedIndex = 0;
+        if (this.achievementContainer) {
+            this.achievementContainer.setVisible(false);
+        }
+        this.menuContainer.setVisible(true);
+        this.updateMenuSelection();
+    }
+
     showMonsterDictionary() {
         this.currentMenu = 'monsters';
         this.monsterIndex = 0;
@@ -739,7 +750,68 @@ class MenuScene extends Phaser.Scene {
             'DRAINER': 'enemy_drainer',
             'CLONER': 'enemy_cloner',
             'SHIELDER': 'enemy_shielder',
-            'BOOMER': 'enemy_boomer'
+            'BOOMER': 'enemy_boomer',
+            // 10 more enemies
+            'WRAITH': 'enemy_wraith',
+            'SCORPION': 'enemy_scorpion',
+            'PRISM': 'enemy_prism',
+            'INFERNO': 'enemy_inferno',
+            'GOLEM': 'enemy_golem',
+            'JESTER': 'enemy_jester',
+            'HYDRA': 'enemy_hydra',
+            'MIRAGE_NEW': 'enemy_mirage',
+            'TITAN': 'enemy_titan',
+            'SPARK': 'enemy_spark',
+            // 50 more enemies
+            'VIPER': 'enemy_viper',
+            'CYCLOPS': 'enemy_cyclops',
+            'WASP': 'enemy_wasp',
+            'MUMMY': 'enemy_mummy',
+            'DJINN': 'enemy_djinn',
+            'GARGOYLE': 'enemy_gargoyle',
+            'BASILISK': 'enemy_basilisk',
+            'BANSHEE': 'enemy_banshee',
+            'PHOENIX': 'enemy_phoenix',
+            'LICH': 'enemy_lich',
+            'WENDIGO': 'enemy_wendigo',
+            'CERBERUS': 'enemy_cerberus',
+            'WYVERN': 'enemy_wyvern',
+            'MINOTAUR': 'enemy_minotaur',
+            'SPECTER': 'enemy_specter',
+            'CHIMERA': 'enemy_chimera',
+            'REAPER': 'enemy_reaper',
+            'OGRE': 'enemy_ogre',
+            'HARPY': 'enemy_harpy',
+            'TROLL': 'enemy_troll',
+            'KRAKEN': 'enemy_kraken',
+            'DEMON': 'enemy_demon',
+            'ELEMENTAL': 'enemy_elemental',
+            'WYRM': 'enemy_wyrm',
+            'SHADE': 'enemy_shade',
+            'FUNGOID': 'enemy_fungoid',
+            'SENTINEL': 'enemy_sentinel',
+            'SLIME_KING': 'enemy_slime_king',
+            'BEETLE': 'enemy_beetle',
+            'WRECKER': 'enemy_wrecker',
+            'ORACLE': 'enemy_oracle',
+            'GOLIATH': 'enemy_goliath',
+            'ASSASSIN': 'enemy_assassin',
+            'PLAGUE': 'enemy_plague',
+            'PHANTOM': 'enemy_phantom',
+            'BRUTE': 'enemy_brute',
+            'SIREN': 'enemy_siren',
+            'COLOSSUS': 'enemy_colossus',
+            'REVENANT': 'enemy_revenant',
+            'GOLEM_FIRE': 'enemy_golem_fire',
+            'GOLEM_ICE': 'enemy_golem_ice',
+            'VAMPIRE_LORD': 'enemy_vampire_lord',
+            'NECROMANCER': 'enemy_necromancer',
+            'SKELETON_KING': 'enemy_skeleton_king',
+            'DRAGON': 'enemy_dragon',
+            'ARCHDEMON': 'enemy_archdemon',
+            'VOID_WALKER': 'enemy_void_walker',
+            'COSMIC_HORROR': 'enemy_cosmic_horror',
+            'WORLD_EATER': 'enemy_world_eater'
         };
 
         const key = this.monsterKeys[this.monsterIndex];
@@ -911,6 +983,294 @@ class MenuScene extends Phaser.Scene {
         }
     }
 
+    showAchievements() {
+        this.currentMenu = 'achievements';
+        this.achievementPage = 0;
+        this.achievementRankTab = 0;  // Start at Bronze tab
+        this.menuContainer.setVisible(false);
+
+        // Initialize achievements if not exists
+        if (!window.gameState.achievements) {
+            window.gameState.achievements = {
+                unlocked: [],
+                stats: {
+                    totalKicks: 0,
+                    totalGames: 0,
+                    totalPowerups: 0,
+                    maxCombo: 0,
+                    maxFloor: 0,
+                    maxScore: 0
+                }
+            };
+        }
+
+        // Create achievements container if it doesn't exist
+        if (!this.achievementContainer) {
+            this.achievementContainer = this.add.container(0, 0);
+
+            // Background
+            const bg = this.add.rectangle(GAME_WIDTH / 2, GAME_HEIGHT / 2, GAME_WIDTH - 20, GAME_HEIGHT - 40, 0x111122, 0.95);
+            bg.setStrokeStyle(2, 0xffcc00);
+            this.achievementContainer.add(bg);
+
+            // Title
+            const title = this.add.text(GAME_WIDTH / 2, 30, '🏆 ACHIEVEMENTS', {
+                fontSize: '14px',
+                fontFamily: 'monospace',
+                color: '#ffcc00',
+                stroke: '#000000',
+                strokeThickness: 2
+            }).setOrigin(0.5);
+            this.achievementContainer.add(title);
+
+            // Navigation hints
+            const navHint = this.add.text(GAME_WIDTH / 2, GAME_HEIGHT - 45, '← → PAGES  |  ↑ ↓ SCROLL', {
+                fontSize: '8px',
+                fontFamily: 'monospace',
+                color: '#ffcc00'
+            }).setOrigin(0.5);
+            this.achievementContainer.add(navHint);
+
+            // Back button
+            const backBtn = this.add.text(GAME_WIDTH / 2, GAME_HEIGHT - 25, '[ ESC - BACK ]', {
+                fontSize: '10px',
+                fontFamily: 'monospace',
+                color: '#888888'
+            }).setOrigin(0.5);
+            this.achievementContainer.add(backBtn);
+        }
+
+        this.updateAchievementDisplay();
+        this.achievementContainer.setVisible(true);
+    }
+
+    updateAchievementDisplay() {
+        // Clear old achievement items
+        if (this.achievementItems) {
+            this.achievementItems.forEach(item => item.destroy());
+        }
+        this.achievementItems = [];
+
+        // Get rank colors
+        const rankColors = {
+            'BRONZE': '#cd7f32',
+            'SILVER': '#c0c0c0',
+            'GOLD': '#ffd700',
+            'PLATINUM': '#e5e4e2'
+        };
+        const rankBgColors = {
+            'BRONZE': 0x3d2f1f,
+            'SILVER': 0x404040,
+            'GOLD': 0x4d4d00,
+            'PLATINUM': 0x2a2a3a
+        };
+
+        // Filter achievements by current rank tab
+        const ranks = ['BRONZE', 'SILVER', 'GOLD', 'PLATINUM'];
+        const currentRank = ranks[this.achievementRankTab || 0];
+        const achievementKeys = Object.keys(ACHIEVEMENTS).filter(key =>
+            ACHIEVEMENTS[key].rank === currentRank
+        );
+
+        const achievementsPerPage = 4;
+        const totalPages = Math.ceil(achievementKeys.length / achievementsPerPage);
+        const startIdx = this.achievementPage * achievementsPerPage;
+        const endIdx = Math.min(startIdx + achievementsPerPage, achievementKeys.length);
+
+        const unlockedAchievements = window.gameState.achievements?.unlocked || [];
+        const totalAchievements = Object.keys(ACHIEVEMENTS).length;
+        const unlockedCount = unlockedAchievements.length;
+
+        // Count by rank
+        const bronzeCount = Object.values(ACHIEVEMENTS).filter(a => a.rank === 'BRONZE' && unlockedAchievements.includes(a.id)).length;
+        const silverCount = Object.values(ACHIEVEMENTS).filter(a => a.rank === 'SILVER' && unlockedAchievements.includes(a.id)).length;
+        const goldCount = Object.values(ACHIEVEMENTS).filter(a => a.rank === 'GOLD' && unlockedAchievements.includes(a.id)).length;
+        const platinumCount = Object.values(ACHIEVEMENTS).filter(a => a.rank === 'PLATINUM' && unlockedAchievements.includes(a.id)).length;
+        const bronzeTotal = Object.values(ACHIEVEMENTS).filter(a => a.rank === 'BRONZE').length;
+        const silverTotal = Object.values(ACHIEVEMENTS).filter(a => a.rank === 'SILVER').length;
+        const goldTotal = Object.values(ACHIEVEMENTS).filter(a => a.rank === 'GOLD').length;
+        const platinumTotal = Object.values(ACHIEVEMENTS).filter(a => a.rank === 'PLATINUM').length;
+
+        // Overall progress
+        const progressText = this.add.text(GAME_WIDTH / 2, 48, `Total: ${unlockedCount}/${totalAchievements}`, {
+            fontSize: '7px',
+            fontFamily: 'monospace',
+            color: '#888888'
+        }).setOrigin(0.5);
+        this.achievementContainer.add(progressText);
+        this.achievementItems.push(progressText);
+
+        // Rank tabs
+        const tabY = 62;
+        const tabWidth = 85;
+        const tabStartX = 45;
+        ranks.forEach((rank, idx) => {
+            const isSelected = idx === (this.achievementRankTab || 0);
+            const counts = [bronzeCount, silverCount, goldCount, platinumCount];
+            const totals = [bronzeTotal, silverTotal, goldTotal, platinumTotal];
+
+            const tabBg = this.add.rectangle(
+                tabStartX + idx * tabWidth, tabY, tabWidth - 4, 16,
+                isSelected ? rankBgColors[rank] : 0x222222, 0.9
+            );
+            tabBg.setStrokeStyle(1, isSelected ? Phaser.Display.Color.HexStringToColor(rankColors[rank]).color : 0x333333);
+            this.achievementContainer.add(tabBg);
+            this.achievementItems.push(tabBg);
+
+            const tabText = this.add.text(tabStartX + idx * tabWidth, tabY,
+                `${rank.charAt(0)}${rank.slice(1).toLowerCase()} ${counts[idx]}/${totals[idx]}`, {
+                fontSize: '6px',
+                fontFamily: 'monospace',
+                color: isSelected ? rankColors[rank] : '#666666'
+            }).setOrigin(0.5);
+            this.achievementContainer.add(tabText);
+            this.achievementItems.push(tabText);
+        });
+
+        // Page indicator
+        if (totalPages > 1) {
+            const pageText = this.add.text(GAME_WIDTH / 2, 78, `Page ${this.achievementPage + 1}/${totalPages}`, {
+                fontSize: '7px',
+                fontFamily: 'monospace',
+                color: '#666666'
+            }).setOrigin(0.5);
+            this.achievementContainer.add(pageText);
+            this.achievementItems.push(pageText);
+        }
+
+        // Left/Right arrows for pages
+        const arrowY = GAME_HEIGHT / 2 + 20;
+        const leftArrow = this.add.text(25, arrowY, '◄', {
+            fontSize: '18px',
+            fontFamily: 'monospace',
+            color: this.achievementPage > 0 ? '#ffcc00' : '#333333'
+        }).setOrigin(0.5);
+        this.achievementContainer.add(leftArrow);
+        this.achievementItems.push(leftArrow);
+
+        const rightArrow = this.add.text(GAME_WIDTH - 25, arrowY, '►', {
+            fontSize: '18px',
+            fontFamily: 'monospace',
+            color: this.achievementPage < totalPages - 1 ? '#ffcc00' : '#333333'
+        }).setOrigin(0.5);
+        this.achievementContainer.add(rightArrow);
+        this.achievementItems.push(rightArrow);
+
+        // Display achievements for this page
+        for (let i = startIdx; i < endIdx; i++) {
+            const key = achievementKeys[i];
+            const achievement = ACHIEVEMENTS[key];
+            const isUnlocked = unlockedAchievements.includes(achievement.id);
+            const yPos = 90 + (i - startIdx) * 52;
+            const rankColor = rankColors[achievement.rank];
+            const bgColor = isUnlocked ? rankBgColors[achievement.rank] : 0x1a1a1a;
+
+            // Achievement box background with rank-colored border
+            const boxBg = this.add.rectangle(GAME_WIDTH / 2, yPos + 18, GAME_WIDTH - 70, 46, bgColor, 0.9);
+            const borderColor = isUnlocked ? Phaser.Display.Color.HexStringToColor(rankColor).color : 0x333333;
+            boxBg.setStrokeStyle(2, borderColor);
+            this.achievementContainer.add(boxBg);
+            this.achievementItems.push(boxBg);
+
+            // Rank badge
+            const rankBadge = this.add.text(50, yPos + 5, ACHIEVEMENT_RANKS[achievement.rank].icon, {
+                fontSize: '10px',
+                fontFamily: 'monospace'
+            }).setOrigin(0.5);
+            this.achievementContainer.add(rankBadge);
+            this.achievementItems.push(rankBadge);
+
+            // Icon
+            const icon = this.add.text(50, yPos + 25, isUnlocked ? achievement.icon : '🔒', {
+                fontSize: '14px',
+                fontFamily: 'monospace'
+            }).setOrigin(0.5);
+            this.achievementContainer.add(icon);
+            this.achievementItems.push(icon);
+
+            // Name with rank color
+            const nameColor = isUnlocked ? rankColor : '#555555';
+            const name = this.add.text(72, yPos + 8, achievement.name, {
+                fontSize: '9px',
+                fontFamily: 'monospace',
+                color: nameColor
+            }).setOrigin(0, 0.5);
+            this.achievementContainer.add(name);
+            this.achievementItems.push(name);
+
+            // Description
+            const desc = this.add.text(72, yPos + 22, achievement.description, {
+                fontSize: '6px',
+                fontFamily: 'monospace',
+                color: isUnlocked ? '#aaaaaa' : '#444444'
+            }).setOrigin(0, 0.5);
+            this.achievementContainer.add(desc);
+            this.achievementItems.push(desc);
+
+            // Reward
+            const rewardColor = isUnlocked ? '#ffcc00' : '#444444';
+            const reward = this.add.text(GAME_WIDTH - 50, yPos + 12, `+${achievement.reward}`, {
+                fontSize: '8px',
+                fontFamily: 'monospace',
+                color: rewardColor
+            }).setOrigin(0.5);
+            this.achievementContainer.add(reward);
+            this.achievementItems.push(reward);
+
+            // Status indicator
+            const statusText = isUnlocked ? '✓' : '○';
+            const statusColor = isUnlocked ? rankColor : '#333333';
+            const status = this.add.text(GAME_WIDTH - 50, yPos + 28, statusText, {
+                fontSize: '12px',
+                fontFamily: 'monospace',
+                color: statusColor
+            }).setOrigin(0.5);
+            this.achievementContainer.add(status);
+            this.achievementItems.push(status);
+        }
+
+        // If no achievements in this category
+        if (achievementKeys.length === 0) {
+            const emptyText = this.add.text(GAME_WIDTH / 2, GAME_HEIGHT / 2, 'No achievements in this category', {
+                fontSize: '8px',
+                fontFamily: 'monospace',
+                color: '#666666'
+            }).setOrigin(0.5);
+            this.achievementContainer.add(emptyText);
+            this.achievementItems.push(emptyText);
+        }
+    }
+
+    changeAchievementRank(direction) {
+        const ranks = ['BRONZE', 'SILVER', 'GOLD', 'PLATINUM'];
+        this.achievementRankTab = this.achievementRankTab || 0;
+        const newTab = this.achievementRankTab + direction;
+        if (newTab >= 0 && newTab < ranks.length) {
+            this.achievementRankTab = newTab;
+            this.achievementPage = 0; // Reset to first page when changing ranks
+            this.soundManager.playSound('ding');
+            this.updateAchievementDisplay();
+        }
+    }
+
+    navigateAchievement(direction) {
+        // Filter by current rank tab
+        const ranks = ['BRONZE', 'SILVER', 'GOLD', 'PLATINUM'];
+        const currentRank = ranks[this.achievementRankTab || 0];
+        const achievementKeys = Object.keys(ACHIEVEMENTS).filter(key =>
+            ACHIEVEMENTS[key].rank === currentRank
+        );
+        const achievementsPerPage = 4;
+        const totalPages = Math.ceil(achievementKeys.length / achievementsPerPage);
+
+        const newPage = this.achievementPage + direction;
+        if (newPage >= 0 && newPage < totalPages) {
+            this.achievementPage = newPage;
+            this.soundManager.playSound('kick');
+            this.updateAchievementDisplay();
+        }
+    }
+
     setupInput() {
         // Keyboard
         this.input.keyboard.on('keydown-UP', () => this.navigate(-1));
@@ -918,11 +1278,15 @@ class MenuScene extends Phaser.Scene {
         this.input.keyboard.on('keydown-LEFT', () => {
             if (this.currentMenu === 'monsters') {
                 this.navigateMonster(-1);
+            } else if (this.currentMenu === 'achievements') {
+                this.navigateAchievement(-1);
             }
         });
         this.input.keyboard.on('keydown-RIGHT', () => {
             if (this.currentMenu === 'monsters') {
                 this.navigateMonster(1);
+            } else if (this.currentMenu === 'achievements') {
+                this.navigateAchievement(1);
             }
         });
         this.input.keyboard.on('keydown-SPACE', () => this.selectOption());
@@ -930,6 +1294,9 @@ class MenuScene extends Phaser.Scene {
         this.input.keyboard.on('keydown-ESC', () => {
             if (this.currentMenu === 'monsters') {
                 this.hideShop();
+                this.soundManager.playSound('kick');
+            } else if (this.currentMenu === 'achievements') {
+                this.hideAchievements();
                 this.soundManager.playSound('kick');
             } else if (this.currentMenu !== 'main') {
                 this.hideShop();
@@ -970,6 +1337,10 @@ class MenuScene extends Phaser.Scene {
         } else if (this.currentMenu === 'monsters') {
             // Monster dictionary is view-only, no navigation needed
             return;
+        } else if (this.currentMenu === 'achievements') {
+            // Up/Down changes rank tabs in achievements
+            this.changeAchievementRank(direction);
+            return;
         } else {
             let items;
             if (this.currentMenu === 'skins') {
@@ -1004,6 +1375,9 @@ class MenuScene extends Phaser.Scene {
                 case 'monsters':
                     this.showMonsterDictionary();
                     break;
+                case 'achievements':
+                    this.showAchievements();
+                    break;
                 case 'skins':
                     this.showShop('skins');
                     break;
@@ -1025,6 +1399,8 @@ class MenuScene extends Phaser.Scene {
                 items = this.buildings;
             }
             const item = items[this.selectedIndex];
+
+            if (!item) return; // Safety check for undefined item
 
             if (item.owned) {
                 // Equip (skins and particles can be equipped)

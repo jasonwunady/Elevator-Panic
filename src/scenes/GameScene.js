@@ -521,17 +521,14 @@ class GameScene extends Phaser.Scene {
         this.createAmbientParticles();
         this.createBackgroundDecorations();
 
-        // Flash effect
-        if (this.cameras && this.cameras.main) {
-            this.cameras.main.flash(300, 255, 255, 255, false, (cam, progress) => {
-                if (progress === 1 && this.elevator) {
-                    // Update elevator colors
-                    if (this.elevator.leftWall) this.elevator.leftWall.setFillStyle(this.currentTheme.wallColor);
-                    if (this.elevator.rightWall) this.elevator.rightWall.setFillStyle(this.currentTheme.wallColor);
-                }
-            });
+        // Update elevator colors for new theme
+        if (this.elevator) {
+            if (this.elevator.leftWall) this.elevator.leftWall.setFillStyle(this.currentTheme.wallColor);
+            if (this.elevator.rightWall) this.elevator.rightWall.setFillStyle(this.currentTheme.wallColor);
+        }
 
-            // Screen shake
+        // Screen shake
+        if (this.cameras && this.cameras.main) {
             this.cameras.main.shake(200, 0.01);
         }
     }
@@ -798,9 +795,6 @@ class GameScene extends Phaser.Scene {
                 });
             }
         });
-
-        // Screen flash
-        this.cameras.main.flash(100, 255, 255, 255);
     }
 
     spawnEnemy(x, y, type) {

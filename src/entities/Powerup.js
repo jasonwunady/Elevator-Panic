@@ -117,12 +117,6 @@ class Powerup extends Phaser.Physics.Arcade.Sprite {
             });
         }
 
-        // Flash screen with powerup color
-        const color = this.getPowerupColor();
-        const r = (color >> 16) & 0xff;
-        const g = (color >> 8) & 0xff;
-        const b = color & 0xff;
-        this.scene.cameras.main.flash(150, r, g, b);
     }
 
     showPowerupText() {

@@ -1458,6 +1458,1172 @@ class BootScene extends Phaser.Scene {
         g.fillRect(6, 11, 4, 2);
         g.generateTexture('enemy_boomer_warn', 16, 14);
         g.destroy();
+
+        // ========== 10 NEW ENEMY TEXTURES ==========
+
+        // WRAITH - ethereal floating specter with trailing wisps
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        // Main ghostly body
+        g.fillStyle(0x4466aa);
+        g.fillRect(4, 2, 8, 10);
+        g.fillStyle(0x3355aa);
+        g.fillRect(3, 4, 10, 6);
+        // Trailing wisps
+        g.fillStyle(0x2244aa);
+        g.fillRect(2, 10, 3, 4);
+        g.fillRect(5, 11, 2, 5);
+        g.fillRect(9, 10, 3, 4);
+        g.fillRect(11, 12, 2, 3);
+        // Glowing eyes
+        g.fillStyle(0x00ffff);
+        g.fillRect(5, 5, 2, 2);
+        g.fillRect(9, 5, 2, 2);
+        // Hollow mouth
+        g.fillStyle(0x112255);
+        g.fillRect(6, 8, 4, 2);
+        g.generateTexture('enemy_wraith', 16, 16);
+        g.destroy();
+
+        // WRAITH fade state
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        g.fillStyle(0x223355);
+        g.fillRect(4, 2, 8, 10);
+        g.fillStyle(0x1a2a44);
+        g.fillRect(3, 4, 10, 6);
+        g.fillStyle(0x112233);
+        g.fillRect(2, 10, 3, 4);
+        g.fillRect(5, 11, 2, 5);
+        g.fillRect(9, 10, 3, 4);
+        g.fillStyle(0x0088aa);
+        g.fillRect(5, 5, 2, 2);
+        g.fillRect(9, 5, 2, 2);
+        g.generateTexture('enemy_wraith_fade', 16, 16);
+        g.destroy();
+
+        // SCORPION - arachnid with pincers and stinging tail
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        // Body segments
+        g.fillStyle(0x884422);
+        g.fillRect(6, 6, 8, 6);
+        g.fillStyle(0x773311);
+        g.fillRect(4, 8, 4, 4);
+        // Pincers
+        g.fillStyle(0x995533);
+        g.fillRect(0, 4, 4, 3);
+        g.fillRect(0, 5, 2, 4);
+        g.fillRect(16, 4, 4, 3);
+        g.fillRect(18, 5, 2, 4);
+        // Tail curving up
+        g.fillStyle(0x884422);
+        g.fillRect(8, 4, 4, 3);
+        g.fillRect(9, 1, 3, 4);
+        // Stinger
+        g.fillStyle(0xff4400);
+        g.fillRect(10, 0, 2, 2);
+        // Eyes
+        g.fillStyle(0xff0000);
+        g.fillRect(5, 7, 2, 2);
+        g.fillRect(11, 7, 2, 2);
+        // Legs
+        g.fillStyle(0x663311);
+        g.fillRect(5, 12, 2, 2);
+        g.fillRect(8, 12, 2, 2);
+        g.fillRect(11, 12, 2, 2);
+        g.generateTexture('enemy_scorpion', 20, 14);
+        g.destroy();
+
+        // PRISM - crystalline enemy that refracts attacks
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        // Crystal body - diamond shape
+        g.fillStyle(0xaaddff);
+        g.fillRect(6, 0, 4, 2);
+        g.fillRect(4, 2, 8, 2);
+        g.fillRect(2, 4, 12, 6);
+        g.fillRect(4, 10, 8, 2);
+        g.fillRect(6, 12, 4, 2);
+        // Inner facets
+        g.fillStyle(0xffffff);
+        g.fillRect(5, 4, 2, 2);
+        g.fillRect(9, 6, 2, 2);
+        g.fillRect(6, 8, 2, 2);
+        // Rainbow refraction
+        g.fillStyle(0xff6666);
+        g.fillRect(1, 6, 2, 2);
+        g.fillStyle(0xffff66);
+        g.fillRect(13, 6, 2, 2);
+        g.fillStyle(0x66ff66);
+        g.fillRect(7, 14, 2, 2);
+        // Core
+        g.fillStyle(0x88ccff);
+        g.fillRect(7, 6, 2, 2);
+        g.generateTexture('enemy_prism', 16, 16);
+        g.destroy();
+
+        // INFERNO - living flame creature
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        // Flame body
+        g.fillStyle(0xff6600);
+        g.fillRect(4, 6, 8, 8);
+        g.fillStyle(0xff8800);
+        g.fillRect(3, 8, 10, 4);
+        // Flame tips
+        g.fillStyle(0xff4400);
+        g.fillRect(5, 2, 3, 5);
+        g.fillRect(9, 3, 2, 4);
+        g.fillRect(3, 4, 2, 4);
+        g.fillRect(11, 5, 2, 3);
+        // Hot core
+        g.fillStyle(0xffff00);
+        g.fillRect(5, 8, 6, 4);
+        g.fillStyle(0xffffff);
+        g.fillRect(6, 9, 4, 2);
+        // Eyes
+        g.fillStyle(0x000000);
+        g.fillRect(5, 10, 2, 2);
+        g.fillRect(9, 10, 2, 2);
+        g.generateTexture('enemy_inferno', 16, 14);
+        g.destroy();
+
+        // GOLEM - stone construct, very slow but tough
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        // Rocky body
+        g.fillStyle(0x666666);
+        g.fillRect(4, 4, 14, 14);
+        g.fillStyle(0x555555);
+        g.fillRect(2, 6, 4, 10);
+        g.fillRect(16, 6, 4, 10);
+        // Head
+        g.fillStyle(0x777777);
+        g.fillRect(6, 0, 10, 6);
+        // Cracks
+        g.fillStyle(0x444444);
+        g.fillRect(8, 2, 1, 4);
+        g.fillRect(12, 3, 1, 3);
+        g.fillRect(6, 8, 2, 1);
+        g.fillRect(14, 10, 1, 3);
+        // Glowing rune
+        g.fillStyle(0x00ff88);
+        g.fillRect(9, 8, 4, 4);
+        g.fillStyle(0x00aa55);
+        g.fillRect(10, 9, 2, 2);
+        // Eyes
+        g.fillStyle(0x00ff88);
+        g.fillRect(8, 2, 2, 2);
+        g.fillRect(12, 2, 2, 2);
+        // Fists
+        g.fillStyle(0x888888);
+        g.fillRect(0, 12, 4, 4);
+        g.fillRect(18, 12, 4, 4);
+        g.generateTexture('enemy_golem', 22, 18);
+        g.destroy();
+
+        // JESTER - chaotic trickster that moves unpredictably
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        // Body
+        g.fillStyle(0xaa22aa);
+        g.fillRect(4, 6, 8, 8);
+        // Jester hat with bells
+        g.fillStyle(0xaa22aa);
+        g.fillRect(6, 2, 4, 4);
+        g.fillStyle(0x22aa22);
+        g.fillRect(2, 0, 4, 4);
+        g.fillRect(10, 0, 4, 4);
+        // Bells
+        g.fillStyle(0xffcc00);
+        g.fillRect(3, 4, 2, 2);
+        g.fillRect(11, 4, 2, 2);
+        // Face
+        g.fillStyle(0xffddcc);
+        g.fillRect(5, 7, 6, 5);
+        // Crazy eyes
+        g.fillStyle(0x000000);
+        g.fillRect(6, 8, 2, 2);
+        g.fillRect(10, 9, 2, 2);
+        // Wide grin
+        g.fillStyle(0xff0000);
+        g.fillRect(6, 11, 4, 1);
+        // Collar
+        g.fillStyle(0xffcc00);
+        g.fillRect(4, 14, 2, 2);
+        g.fillRect(10, 14, 2, 2);
+        g.generateTexture('enemy_jester', 16, 16);
+        g.destroy();
+
+        // HYDRA - multi-headed serpent
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        // Body
+        g.fillStyle(0x228844);
+        g.fillRect(6, 10, 8, 6);
+        g.fillStyle(0x116633);
+        g.fillRect(4, 12, 12, 4);
+        // Three necks
+        g.fillStyle(0x228844);
+        g.fillRect(3, 4, 3, 8);
+        g.fillRect(8, 2, 4, 10);
+        g.fillRect(14, 4, 3, 8);
+        // Three heads
+        g.fillStyle(0x33aa55);
+        g.fillRect(2, 0, 5, 5);
+        g.fillRect(7, 0, 6, 4);
+        g.fillRect(13, 0, 5, 5);
+        // Eyes (6 total)
+        g.fillStyle(0xff0000);
+        g.fillRect(3, 1, 1, 1);
+        g.fillRect(5, 1, 1, 1);
+        g.fillRect(8, 1, 1, 1);
+        g.fillRect(11, 1, 1, 1);
+        g.fillRect(14, 1, 1, 1);
+        g.fillRect(16, 1, 1, 1);
+        // Fangs
+        g.fillStyle(0xffffff);
+        g.fillRect(3, 4, 1, 1);
+        g.fillRect(5, 4, 1, 1);
+        g.fillRect(9, 3, 1, 1);
+        g.fillRect(10, 3, 1, 1);
+        g.fillRect(14, 4, 1, 1);
+        g.fillRect(16, 4, 1, 1);
+        g.generateTexture('enemy_hydra', 20, 16);
+        g.destroy();
+
+        // MIRAGE - creates illusory copies
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        // Semi-transparent body
+        g.fillStyle(0x8888cc);
+        g.fillRect(4, 2, 8, 10);
+        g.fillStyle(0x7777bb);
+        g.fillRect(3, 4, 10, 6);
+        // Shimmering outline
+        g.fillStyle(0xaaaaff);
+        g.fillRect(2, 2, 2, 10);
+        g.fillRect(12, 2, 2, 10);
+        g.fillRect(4, 0, 8, 2);
+        g.fillRect(4, 12, 8, 2);
+        // Mysterious eyes
+        g.fillStyle(0xffffff);
+        g.fillRect(5, 5, 2, 2);
+        g.fillRect(9, 5, 2, 2);
+        g.fillStyle(0x4444ff);
+        g.fillRect(5, 5, 1, 2);
+        g.fillRect(9, 5, 1, 2);
+        // Wavering effect
+        g.fillStyle(0x9999dd);
+        g.fillRect(1, 6, 1, 2);
+        g.fillRect(14, 6, 1, 2);
+        g.generateTexture('enemy_mirage', 16, 14);
+        g.destroy();
+
+        // TITAN - massive slow enemy
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        // Huge body
+        g.fillStyle(0x884444);
+        g.fillRect(6, 6, 18, 18);
+        g.fillStyle(0x773333);
+        g.fillRect(4, 8, 4, 14);
+        g.fillRect(22, 8, 4, 14);
+        // Head
+        g.fillStyle(0x995555);
+        g.fillRect(10, 0, 10, 8);
+        // Angry eyes
+        g.fillStyle(0xffff00);
+        g.fillRect(12, 2, 3, 3);
+        g.fillRect(16, 2, 3, 3);
+        g.fillStyle(0xff0000);
+        g.fillRect(13, 3, 2, 2);
+        g.fillRect(17, 3, 2, 2);
+        // Tusks
+        g.fillStyle(0xffffff);
+        g.fillRect(11, 6, 2, 3);
+        g.fillRect(18, 6, 2, 3);
+        // Chest scar
+        g.fillStyle(0x662222);
+        g.fillRect(12, 10, 6, 2);
+        g.fillRect(14, 12, 2, 4);
+        // Fists
+        g.fillStyle(0xaa6666);
+        g.fillRect(0, 16, 6, 6);
+        g.fillRect(24, 16, 6, 6);
+        g.generateTexture('enemy_titan', 30, 24);
+        g.destroy();
+
+        // SPARK - tiny electric ball that moves erratically
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        // Electric core
+        g.fillStyle(0xffff00);
+        g.fillRect(2, 2, 4, 4);
+        g.fillStyle(0xffffff);
+        g.fillRect(3, 3, 2, 2);
+        // Electric bolts
+        g.fillStyle(0xffff88);
+        g.fillRect(0, 3, 2, 2);
+        g.fillRect(6, 3, 2, 2);
+        g.fillRect(3, 0, 2, 2);
+        g.fillRect(3, 6, 2, 2);
+        // Tiny face
+        g.fillStyle(0x000000);
+        g.fillRect(3, 3, 1, 1);
+        g.fillRect(4, 3, 1, 1);
+        g.generateTexture('enemy_spark', 8, 8);
+        g.destroy();
+
+        // ========== 50 MORE ENEMY TEXTURES ==========
+
+        // VIPER - snake-like enemy
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        g.fillStyle(0x44aa44);
+        g.fillRect(2, 6, 14, 4);
+        g.fillStyle(0x33883);
+        g.fillRect(0, 7, 4, 3);
+        g.fillStyle(0x55cc55);
+        g.fillRect(12, 5, 6, 5);
+        g.fillStyle(0xff0000);
+        g.fillRect(15, 6, 2, 1);
+        g.fillRect(15, 8, 2, 1);
+        g.fillStyle(0xffff00);
+        g.fillRect(14, 7, 2, 2);
+        g.generateTexture('enemy_viper', 18, 12);
+        g.destroy();
+
+        // CYCLOPS - one-eyed giant
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        g.fillStyle(0x8866aa);
+        g.fillRect(4, 4, 12, 14);
+        g.fillStyle(0x7755aa);
+        g.fillRect(2, 8, 4, 8);
+        g.fillRect(14, 8, 4, 8);
+        g.fillStyle(0xffffff);
+        g.fillRect(7, 6, 6, 5);
+        g.fillStyle(0xff0000);
+        g.fillRect(9, 7, 3, 3);
+        g.fillStyle(0x000000);
+        g.fillRect(10, 8, 1, 1);
+        g.generateTexture('enemy_cyclops', 20, 18);
+        g.destroy();
+
+        // WASP - flying stinger
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        g.fillStyle(0xffcc00);
+        g.fillRect(4, 4, 8, 6);
+        g.fillStyle(0x222222);
+        g.fillRect(5, 5, 6, 1);
+        g.fillRect(5, 7, 6, 1);
+        g.fillStyle(0xaaddff);
+        g.fillRect(1, 2, 4, 3);
+        g.fillRect(11, 2, 4, 3);
+        g.fillStyle(0xff4400);
+        g.fillRect(6, 10, 4, 3);
+        g.fillStyle(0x000000);
+        g.fillRect(5, 4, 1, 1);
+        g.fillRect(10, 4, 1, 1);
+        g.generateTexture('enemy_wasp', 16, 14);
+        g.destroy();
+
+        // MUMMY - wrapped undead
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        g.fillStyle(0xccbb99);
+        g.fillRect(4, 2, 8, 14);
+        g.fillStyle(0xaa9977);
+        g.fillRect(3, 4, 2, 10);
+        g.fillRect(11, 4, 2, 10);
+        g.fillStyle(0x998866);
+        g.fillRect(5, 3, 6, 2);
+        g.fillRect(5, 7, 6, 2);
+        g.fillRect(5, 11, 6, 2);
+        g.fillStyle(0x00ff00);
+        g.fillRect(5, 5, 2, 2);
+        g.fillRect(9, 5, 2, 2);
+        g.generateTexture('enemy_mummy', 16, 16);
+        g.destroy();
+
+        // DJINN - magical genie
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        g.fillStyle(0x4488ff);
+        g.fillRect(4, 2, 8, 8);
+        g.fillStyle(0x3377ee);
+        g.fillRect(3, 10, 10, 4);
+        g.fillRect(5, 14, 6, 2);
+        g.fillStyle(0x66aaff);
+        g.fillRect(2, 4, 3, 4);
+        g.fillRect(11, 4, 3, 4);
+        g.fillStyle(0xffffff);
+        g.fillRect(5, 4, 2, 2);
+        g.fillRect(9, 4, 2, 2);
+        g.fillStyle(0xffcc00);
+        g.fillRect(6, 0, 4, 3);
+        g.generateTexture('enemy_djinn', 16, 16);
+        g.destroy();
+
+        // GARGOYLE - stone flyer
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        g.fillStyle(0x555566);
+        g.fillRect(6, 4, 8, 10);
+        g.fillStyle(0x444455);
+        g.fillRect(0, 6, 6, 6);
+        g.fillRect(14, 6, 6, 6);
+        g.fillStyle(0x666677);
+        g.fillRect(8, 0, 4, 5);
+        g.fillStyle(0xff4400);
+        g.fillRect(8, 2, 2, 2);
+        g.fillRect(10, 2, 2, 2);
+        g.fillStyle(0x333344);
+        g.fillRect(8, 6, 4, 2);
+        g.generateTexture('enemy_gargoyle', 20, 14);
+        g.destroy();
+
+        // BASILISK - petrifying serpent
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        g.fillStyle(0x448844);
+        g.fillRect(4, 6, 12, 6);
+        g.fillStyle(0x336633);
+        g.fillRect(2, 8, 4, 4);
+        g.fillStyle(0x55aa55);
+        g.fillRect(12, 4, 6, 6);
+        g.fillStyle(0xffff00);
+        g.fillRect(14, 5, 2, 2);
+        g.fillRect(14, 7, 2, 2);
+        g.fillStyle(0xff0000);
+        g.fillRect(6, 0, 4, 4);
+        g.generateTexture('enemy_basilisk', 18, 14);
+        g.destroy();
+
+        // BANSHEE - screaming spirit
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        g.fillStyle(0xddddff);
+        g.fillRect(4, 2, 8, 10);
+        g.fillStyle(0xccccee);
+        g.fillRect(2, 10, 12, 4);
+        g.fillStyle(0x000000);
+        g.fillRect(5, 5, 2, 2);
+        g.fillRect(9, 5, 2, 2);
+        g.fillStyle(0x000000);
+        g.fillRect(6, 8, 4, 3);
+        g.fillStyle(0xaaaadd);
+        g.fillRect(0, 4, 3, 2);
+        g.fillRect(13, 4, 3, 2);
+        g.generateTexture('enemy_banshee', 16, 14);
+        g.destroy();
+
+        // PHOENIX - fire bird
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        g.fillStyle(0xff6600);
+        g.fillRect(6, 4, 8, 8);
+        g.fillStyle(0xff8800);
+        g.fillRect(0, 6, 6, 4);
+        g.fillRect(14, 6, 6, 4);
+        g.fillStyle(0xffaa00);
+        g.fillRect(8, 0, 4, 5);
+        g.fillStyle(0xffff00);
+        g.fillRect(8, 6, 4, 4);
+        g.fillStyle(0x000000);
+        g.fillRect(9, 3, 2, 2);
+        g.fillStyle(0xff4400);
+        g.fillRect(6, 12, 2, 3);
+        g.fillRect(12, 12, 2, 3);
+        g.generateTexture('enemy_phoenix', 20, 16);
+        g.destroy();
+
+        // LICH - skeletal mage
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        g.fillStyle(0x2222aa);
+        g.fillRect(4, 6, 8, 10);
+        g.fillStyle(0xdddddd);
+        g.fillRect(5, 2, 6, 5);
+        g.fillStyle(0x000000);
+        g.fillRect(6, 3, 2, 2);
+        g.fillRect(9, 3, 2, 2);
+        g.fillStyle(0x00ffff);
+        g.fillRect(6, 3, 1, 1);
+        g.fillRect(9, 3, 1, 1);
+        g.fillStyle(0x1111aa);
+        g.fillRect(2, 8, 3, 6);
+        g.fillRect(11, 8, 3, 6);
+        g.fillStyle(0x8800ff);
+        g.fillRect(0, 6, 3, 3);
+        g.generateTexture('enemy_lich', 16, 16);
+        g.destroy();
+
+        // WENDIGO - ice beast
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        g.fillStyle(0xaaddff);
+        g.fillRect(4, 4, 12, 14);
+        g.fillStyle(0x88bbee);
+        g.fillRect(2, 8, 4, 8);
+        g.fillRect(14, 8, 4, 8);
+        g.fillStyle(0xffffff);
+        g.fillRect(6, 0, 3, 5);
+        g.fillRect(11, 0, 3, 5);
+        g.fillStyle(0x0088ff);
+        g.fillRect(6, 6, 3, 3);
+        g.fillRect(11, 6, 3, 3);
+        g.fillStyle(0x000000);
+        g.fillRect(8, 11, 4, 2);
+        g.generateTexture('enemy_wendigo', 20, 18);
+        g.destroy();
+
+        // CERBERUS - three-headed dog
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        g.fillStyle(0x442222);
+        g.fillRect(6, 8, 12, 8);
+        g.fillStyle(0x553333);
+        g.fillRect(2, 4, 6, 6);
+        g.fillRect(9, 2, 6, 6);
+        g.fillRect(16, 4, 6, 6);
+        g.fillStyle(0xff0000);
+        g.fillRect(4, 5, 2, 2);
+        g.fillRect(11, 3, 2, 2);
+        g.fillRect(18, 5, 2, 2);
+        g.fillStyle(0xffffff);
+        g.fillRect(3, 8, 2, 2);
+        g.fillRect(10, 6, 2, 2);
+        g.fillRect(17, 8, 2, 2);
+        g.generateTexture('enemy_cerberus', 24, 16);
+        g.destroy();
+
+        // WYVERN - dragon-like
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        g.fillStyle(0x664488);
+        g.fillRect(6, 6, 10, 8);
+        g.fillStyle(0x553377);
+        g.fillRect(0, 4, 8, 6);
+        g.fillRect(14, 4, 8, 6);
+        g.fillStyle(0x775599);
+        g.fillRect(8, 0, 6, 7);
+        g.fillStyle(0xffff00);
+        g.fillRect(10, 2, 2, 2);
+        g.fillRect(12, 2, 2, 2);
+        g.fillStyle(0x664488);
+        g.fillRect(8, 14, 3, 4);
+        g.fillRect(11, 14, 3, 4);
+        g.generateTexture('enemy_wyvern', 22, 18);
+        g.destroy();
+
+        // MINOTAUR - bull-headed brute
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        g.fillStyle(0x884422);
+        g.fillRect(6, 6, 12, 14);
+        g.fillStyle(0x773311);
+        g.fillRect(4, 10, 4, 8);
+        g.fillRect(16, 10, 4, 8);
+        g.fillStyle(0x995533);
+        g.fillRect(8, 0, 8, 8);
+        g.fillStyle(0xccaa88);
+        g.fillRect(4, 0, 4, 4);
+        g.fillRect(16, 0, 4, 4);
+        g.fillStyle(0xff0000);
+        g.fillRect(10, 3, 2, 2);
+        g.fillRect(13, 3, 2, 2);
+        g.fillStyle(0x663311);
+        g.fillRect(10, 6, 4, 2);
+        g.generateTexture('enemy_minotaur', 24, 20);
+        g.destroy();
+
+        // SPECTER - fading ghost
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        g.fillStyle(0x6688aa);
+        g.fillRect(4, 2, 8, 10);
+        g.fillStyle(0x5577aa);
+        g.fillRect(2, 10, 12, 4);
+        g.fillStyle(0x4466aa);
+        g.fillRect(4, 14, 3, 2);
+        g.fillRect(9, 14, 3, 2);
+        g.fillStyle(0xffffff);
+        g.fillRect(5, 5, 2, 2);
+        g.fillRect(9, 5, 2, 2);
+        g.fillStyle(0x000000);
+        g.fillRect(6, 5, 1, 2);
+        g.fillRect(10, 5, 1, 2);
+        g.generateTexture('enemy_specter', 16, 16);
+        g.destroy();
+
+        // CHIMERA - multi-animal beast
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        g.fillStyle(0xaa6644);
+        g.fillRect(6, 6, 12, 10);
+        g.fillStyle(0x448844);
+        g.fillRect(16, 2, 6, 6);
+        g.fillStyle(0xccaa66);
+        g.fillRect(2, 2, 6, 6);
+        g.fillStyle(0x884422);
+        g.fillRect(8, 0, 6, 6);
+        g.fillStyle(0xffff00);
+        g.fillRect(4, 3, 2, 2);
+        g.fillRect(10, 2, 2, 2);
+        g.fillRect(18, 3, 2, 2);
+        g.generateTexture('enemy_chimera', 24, 16);
+        g.destroy();
+
+        // REAPER - death figure
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        g.fillStyle(0x111111);
+        g.fillRect(4, 4, 8, 12);
+        g.fillStyle(0x222222);
+        g.fillRect(2, 6, 4, 8);
+        g.fillRect(10, 6, 4, 8);
+        g.fillStyle(0x000000);
+        g.fillRect(6, 0, 4, 5);
+        g.fillStyle(0xff0000);
+        g.fillRect(6, 2, 2, 2);
+        g.fillRect(8, 2, 2, 2);
+        g.fillStyle(0x888888);
+        g.fillRect(0, 4, 4, 2);
+        g.fillRect(0, 2, 2, 4);
+        g.generateTexture('enemy_reaper', 16, 16);
+        g.destroy();
+
+        // OGRE - club-wielding giant
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        g.fillStyle(0x66aa66);
+        g.fillRect(6, 4, 12, 14);
+        g.fillStyle(0x559955);
+        g.fillRect(4, 8, 4, 8);
+        g.fillRect(16, 8, 4, 8);
+        g.fillStyle(0x77bb77);
+        g.fillRect(8, 0, 8, 6);
+        g.fillStyle(0xffff00);
+        g.fillRect(10, 2, 2, 2);
+        g.fillRect(13, 2, 2, 2);
+        g.fillStyle(0x884422);
+        g.fillRect(0, 6, 4, 10);
+        g.generateTexture('enemy_ogre', 24, 18);
+        g.destroy();
+
+        // HARPY - bird woman
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        g.fillStyle(0xddaa88);
+        g.fillRect(6, 2, 6, 6);
+        g.fillStyle(0x664422);
+        g.fillRect(4, 6, 10, 8);
+        g.fillStyle(0x553311);
+        g.fillRect(0, 4, 5, 6);
+        g.fillRect(13, 4, 5, 6);
+        g.fillStyle(0x000000);
+        g.fillRect(7, 4, 2, 2);
+        g.fillRect(10, 4, 2, 2);
+        g.fillStyle(0xffcc00);
+        g.fillRect(8, 6, 3, 2);
+        g.generateTexture('enemy_harpy', 18, 14);
+        g.destroy();
+
+        // TROLL - regenerating brute
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        g.fillStyle(0x557755);
+        g.fillRect(4, 4, 12, 14);
+        g.fillStyle(0x446644);
+        g.fillRect(2, 8, 4, 8);
+        g.fillRect(14, 8, 4, 8);
+        g.fillStyle(0x668866);
+        g.fillRect(6, 0, 8, 6);
+        g.fillStyle(0xff0000);
+        g.fillRect(8, 2, 2, 2);
+        g.fillRect(11, 2, 2, 2);
+        g.fillStyle(0x444444);
+        g.fillRect(8, 5, 4, 2);
+        g.generateTexture('enemy_troll', 20, 18);
+        g.destroy();
+
+        // KRAKEN - tentacle monster
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        g.fillStyle(0x446688);
+        g.fillRect(6, 2, 8, 8);
+        g.fillStyle(0x335577);
+        g.fillRect(0, 8, 4, 6);
+        g.fillRect(4, 10, 3, 6);
+        g.fillRect(9, 10, 3, 6);
+        g.fillRect(12, 8, 4, 6);
+        g.fillRect(16, 10, 4, 5);
+        g.fillStyle(0xffff00);
+        g.fillRect(8, 4, 2, 2);
+        g.fillRect(11, 4, 2, 2);
+        g.generateTexture('enemy_kraken', 20, 16);
+        g.destroy();
+
+        // DEMON - hellish creature
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        g.fillStyle(0xaa2222);
+        g.fillRect(4, 4, 10, 12);
+        g.fillStyle(0x881111);
+        g.fillRect(2, 8, 4, 6);
+        g.fillRect(12, 8, 4, 6);
+        g.fillStyle(0xcc3333);
+        g.fillRect(6, 0, 3, 5);
+        g.fillRect(10, 0, 3, 5);
+        g.fillStyle(0xffff00);
+        g.fillRect(6, 6, 2, 2);
+        g.fillRect(10, 6, 2, 2);
+        g.fillStyle(0x000000);
+        g.fillRect(7, 10, 4, 2);
+        g.generateTexture('enemy_demon', 18, 16);
+        g.destroy();
+
+        // ELEMENTAL - pure energy being
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        g.fillStyle(0x44ddff);
+        g.fillRect(4, 2, 8, 10);
+        g.fillStyle(0x22bbdd);
+        g.fillRect(2, 6, 12, 6);
+        g.fillStyle(0xffffff);
+        g.fillRect(6, 4, 2, 2);
+        g.fillRect(9, 4, 2, 2);
+        g.fillStyle(0x66eeff);
+        g.fillRect(3, 0, 2, 4);
+        g.fillRect(11, 0, 2, 4);
+        g.fillRect(1, 8, 2, 4);
+        g.fillRect(13, 8, 2, 4);
+        g.generateTexture('enemy_elemental', 16, 14);
+        g.destroy();
+
+        // WYRM - serpent dragon
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        g.fillStyle(0x668844);
+        g.fillRect(0, 6, 20, 4);
+        g.fillStyle(0x779955);
+        g.fillRect(16, 2, 6, 6);
+        g.fillStyle(0x557733);
+        g.fillRect(2, 8, 4, 4);
+        g.fillRect(8, 7, 4, 4);
+        g.fillRect(14, 8, 4, 4);
+        g.fillStyle(0xff0000);
+        g.fillRect(18, 3, 2, 2);
+        g.fillRect(18, 5, 2, 2);
+        g.generateTexture('enemy_wyrm', 22, 14);
+        g.destroy();
+
+        // SHADE - dark clone
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        g.fillStyle(0x222233);
+        g.fillRect(4, 2, 8, 12);
+        g.fillStyle(0x111122);
+        g.fillRect(2, 6, 4, 6);
+        g.fillRect(10, 6, 4, 6);
+        g.fillStyle(0x8800ff);
+        g.fillRect(5, 5, 2, 2);
+        g.fillRect(9, 5, 2, 2);
+        g.fillStyle(0x333344);
+        g.fillRect(6, 9, 4, 2);
+        g.generateTexture('enemy_shade', 16, 14);
+        g.destroy();
+
+        // FUNGOID - mushroom creature
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        g.fillStyle(0xcc8866);
+        g.fillRect(5, 8, 6, 6);
+        g.fillStyle(0xff6644);
+        g.fillRect(2, 2, 12, 8);
+        g.fillStyle(0xffffff);
+        g.fillRect(4, 4, 2, 2);
+        g.fillRect(8, 3, 2, 2);
+        g.fillRect(11, 5, 2, 2);
+        g.fillStyle(0x000000);
+        g.fillRect(5, 9, 2, 2);
+        g.fillRect(9, 9, 2, 2);
+        g.generateTexture('enemy_fungoid', 16, 14);
+        g.destroy();
+
+        // SENTINEL - armored guard
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        g.fillStyle(0x888899);
+        g.fillRect(4, 4, 10, 12);
+        g.fillStyle(0x666677);
+        g.fillRect(2, 8, 4, 6);
+        g.fillRect(12, 8, 4, 6);
+        g.fillStyle(0xaaaaaa);
+        g.fillRect(6, 0, 6, 5);
+        g.fillStyle(0x00aaff);
+        g.fillRect(8, 2, 3, 2);
+        g.fillStyle(0x444455);
+        g.fillRect(6, 6, 6, 4);
+        g.generateTexture('enemy_sentinel', 18, 16);
+        g.destroy();
+
+        // SLIME_KING - giant slime
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        g.fillStyle(0x44dd44);
+        g.fillRect(2, 4, 16, 12);
+        g.fillStyle(0x33cc33);
+        g.fillRect(4, 2, 12, 4);
+        g.fillStyle(0x55ee55);
+        g.fillRect(6, 4, 4, 3);
+        g.fillStyle(0x000000);
+        g.fillRect(6, 7, 3, 3);
+        g.fillRect(11, 7, 3, 3);
+        g.fillStyle(0xffcc00);
+        g.fillRect(8, 0, 4, 3);
+        g.generateTexture('enemy_slime_king', 20, 16);
+        g.destroy();
+
+        // BEETLE - armored insect
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        g.fillStyle(0x224466);
+        g.fillRect(2, 4, 12, 8);
+        g.fillStyle(0x113355);
+        g.fillRect(4, 2, 8, 4);
+        g.fillStyle(0x335577);
+        g.fillRect(1, 6, 2, 4);
+        g.fillRect(13, 6, 2, 4);
+        g.fillStyle(0x88aacc);
+        g.fillRect(4, 5, 3, 2);
+        g.fillRect(9, 5, 3, 2);
+        g.fillStyle(0x000000);
+        g.fillRect(5, 3, 2, 2);
+        g.fillRect(9, 3, 2, 2);
+        g.generateTexture('enemy_beetle', 16, 12);
+        g.destroy();
+
+        // WRECKER - demolition robot
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        g.fillStyle(0xcc6600);
+        g.fillRect(4, 4, 12, 12);
+        g.fillStyle(0xaa5500);
+        g.fillRect(2, 8, 4, 6);
+        g.fillRect(14, 8, 4, 6);
+        g.fillStyle(0x222222);
+        g.fillRect(6, 0, 8, 5);
+        g.fillStyle(0xff0000);
+        g.fillRect(8, 2, 2, 2);
+        g.fillRect(11, 2, 2, 2);
+        g.fillStyle(0xffff00);
+        g.fillRect(0, 6, 4, 4);
+        g.generateTexture('enemy_wrecker', 20, 16);
+        g.destroy();
+
+        // ORACLE - psychic enemy
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        g.fillStyle(0x8844aa);
+        g.fillRect(4, 4, 8, 10);
+        g.fillStyle(0x7733aa);
+        g.fillRect(2, 8, 4, 4);
+        g.fillRect(10, 8, 4, 4);
+        g.fillStyle(0xaa66cc);
+        g.fillRect(6, 0, 4, 5);
+        g.fillStyle(0xffffff);
+        g.fillRect(5, 6, 2, 2);
+        g.fillRect(9, 6, 2, 2);
+        g.fillStyle(0xff00ff);
+        g.fillRect(6, 6, 1, 2);
+        g.fillRect(10, 6, 1, 2);
+        g.generateTexture('enemy_oracle', 16, 14);
+        g.destroy();
+
+        // GOLIATH - mega tank
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        g.fillStyle(0x556677);
+        g.fillRect(4, 4, 20, 18);
+        g.fillStyle(0x445566);
+        g.fillRect(2, 10, 4, 10);
+        g.fillRect(22, 10, 4, 10);
+        g.fillStyle(0x667788);
+        g.fillRect(8, 0, 12, 6);
+        g.fillStyle(0xff4400);
+        g.fillRect(12, 2, 3, 3);
+        g.fillRect(16, 2, 3, 3);
+        g.fillStyle(0x444455);
+        g.fillRect(10, 8, 8, 6);
+        g.generateTexture('enemy_goliath', 28, 22);
+        g.destroy();
+
+        // ASSASSIN - stealth killer
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        g.fillStyle(0x333344);
+        g.fillRect(4, 2, 8, 12);
+        g.fillStyle(0x222233);
+        g.fillRect(2, 6, 4, 6);
+        g.fillRect(10, 6, 4, 6);
+        g.fillStyle(0x444455);
+        g.fillRect(6, 0, 4, 3);
+        g.fillStyle(0xff0000);
+        g.fillRect(5, 4, 2, 1);
+        g.fillRect(9, 4, 2, 1);
+        g.fillStyle(0xaaaaaa);
+        g.fillRect(12, 8, 4, 2);
+        g.generateTexture('enemy_assassin', 16, 14);
+        g.destroy();
+
+        // PLAGUE - disease spreader
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        g.fillStyle(0x557722);
+        g.fillRect(4, 2, 8, 10);
+        g.fillStyle(0x446611);
+        g.fillRect(2, 6, 4, 6);
+        g.fillRect(10, 6, 4, 6);
+        g.fillStyle(0x88aa44);
+        g.fillRect(3, 0, 3, 3);
+        g.fillRect(10, 0, 3, 3);
+        g.fillStyle(0xffff00);
+        g.fillRect(5, 4, 2, 2);
+        g.fillRect(9, 4, 2, 2);
+        g.fillStyle(0x224400);
+        g.fillRect(6, 8, 4, 2);
+        g.generateTexture('enemy_plague', 16, 14);
+        g.destroy();
+
+        // PHANTOM - invisible stalker
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        g.fillStyle(0x4455aa);
+        g.fillRect(4, 2, 8, 10);
+        g.fillStyle(0x3344aa);
+        g.fillRect(2, 8, 12, 4);
+        g.fillStyle(0x5566bb);
+        g.fillRect(3, 12, 4, 2);
+        g.fillRect(9, 12, 4, 2);
+        g.fillStyle(0xffffff);
+        g.fillRect(5, 4, 2, 2);
+        g.fillRect(9, 4, 2, 2);
+        g.fillStyle(0x223388);
+        g.fillRect(6, 7, 4, 2);
+        g.generateTexture('enemy_phantom', 16, 14);
+        g.destroy();
+
+        // BRUTE - heavy hitter
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        g.fillStyle(0x994444);
+        g.fillRect(4, 4, 14, 14);
+        g.fillStyle(0x883333);
+        g.fillRect(2, 10, 4, 6);
+        g.fillRect(16, 10, 4, 6);
+        g.fillStyle(0xaa5555);
+        g.fillRect(8, 0, 6, 5);
+        g.fillStyle(0xffff00);
+        g.fillRect(9, 2, 2, 2);
+        g.fillRect(12, 2, 2, 2);
+        g.fillStyle(0x772222);
+        g.fillRect(9, 6, 4, 3);
+        g.generateTexture('enemy_brute', 22, 18);
+        g.destroy();
+
+        // SIREN - hypnotic attacker
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        g.fillStyle(0x44aaaa);
+        g.fillRect(4, 2, 8, 8);
+        g.fillStyle(0x339999);
+        g.fillRect(3, 8, 10, 6);
+        g.fillStyle(0x55bbbb);
+        g.fillRect(2, 14, 12, 2);
+        g.fillStyle(0x88dddd);
+        g.fillRect(6, 0, 4, 3);
+        g.fillStyle(0x000000);
+        g.fillRect(5, 4, 2, 2);
+        g.fillRect(9, 4, 2, 2);
+        g.fillStyle(0xff4488);
+        g.fillRect(6, 7, 4, 1);
+        g.generateTexture('enemy_siren', 16, 16);
+        g.destroy();
+
+        // COLOSSUS - walking statue
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        g.fillStyle(0x777788);
+        g.fillRect(6, 4, 16, 18);
+        g.fillStyle(0x666677);
+        g.fillRect(4, 12, 4, 10);
+        g.fillRect(20, 12, 4, 10);
+        g.fillStyle(0x888899);
+        g.fillRect(10, 0, 8, 6);
+        g.fillStyle(0x00ff88);
+        g.fillRect(12, 2, 2, 2);
+        g.fillRect(15, 2, 2, 2);
+        g.fillStyle(0x555566);
+        g.fillRect(10, 8, 8, 4);
+        g.generateTexture('enemy_colossus', 28, 22);
+        g.destroy();
+
+        // REVENANT - undead warrior
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        g.fillStyle(0x445544);
+        g.fillRect(4, 4, 10, 12);
+        g.fillStyle(0x334433);
+        g.fillRect(2, 8, 4, 6);
+        g.fillRect(12, 8, 4, 6);
+        g.fillStyle(0xddddcc);
+        g.fillRect(6, 0, 6, 5);
+        g.fillStyle(0xff0000);
+        g.fillRect(7, 2, 2, 2);
+        g.fillRect(10, 2, 2, 2);
+        g.fillStyle(0x888888);
+        g.fillRect(14, 6, 4, 8);
+        g.generateTexture('enemy_revenant', 18, 16);
+        g.destroy();
+
+        // GOLEM_FIRE - burning stone
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        g.fillStyle(0x884422);
+        g.fillRect(4, 4, 14, 14);
+        g.fillStyle(0xff6600);
+        g.fillRect(6, 2, 3, 4);
+        g.fillRect(13, 2, 3, 4);
+        g.fillStyle(0x773311);
+        g.fillRect(2, 8, 4, 8);
+        g.fillRect(16, 8, 4, 8);
+        g.fillStyle(0xffaa00);
+        g.fillRect(8, 8, 6, 4);
+        g.fillStyle(0xffff00);
+        g.fillRect(9, 9, 4, 2);
+        g.generateTexture('enemy_golem_fire', 22, 18);
+        g.destroy();
+
+        // GOLEM_ICE - frozen stone
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        g.fillStyle(0x6688aa);
+        g.fillRect(4, 4, 14, 14);
+        g.fillStyle(0xaaddff);
+        g.fillRect(6, 2, 3, 4);
+        g.fillRect(13, 2, 3, 4);
+        g.fillStyle(0x557799);
+        g.fillRect(2, 8, 4, 8);
+        g.fillRect(16, 8, 4, 8);
+        g.fillStyle(0x88ccff);
+        g.fillRect(8, 8, 6, 4);
+        g.fillStyle(0xffffff);
+        g.fillRect(9, 9, 4, 2);
+        g.generateTexture('enemy_golem_ice', 22, 18);
+        g.destroy();
+
+        // VAMPIRE_LORD - stronger vampire
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        g.fillStyle(0x330022);
+        g.fillRect(4, 4, 10, 12);
+        g.fillStyle(0x220011);
+        g.fillRect(0, 6, 5, 6);
+        g.fillRect(13, 6, 5, 6);
+        g.fillStyle(0xddccdd);
+        g.fillRect(6, 0, 6, 5);
+        g.fillStyle(0xff0000);
+        g.fillRect(7, 2, 2, 2);
+        g.fillRect(10, 2, 2, 2);
+        g.fillStyle(0xffcc00);
+        g.fillRect(8, 0, 2, 2);
+        g.generateTexture('enemy_vampire_lord', 18, 16);
+        g.destroy();
+
+        // NECROMANCER - undead summoner
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        g.fillStyle(0x222244);
+        g.fillRect(4, 4, 8, 10);
+        g.fillStyle(0x111133);
+        g.fillRect(2, 8, 4, 4);
+        g.fillRect(10, 8, 4, 4);
+        g.fillStyle(0x444466);
+        g.fillRect(5, 0, 6, 5);
+        g.fillStyle(0x00ff00);
+        g.fillRect(5, 6, 2, 2);
+        g.fillRect(9, 6, 2, 2);
+        g.fillStyle(0x00aa00);
+        g.fillRect(0, 4, 3, 6);
+        g.generateTexture('enemy_necromancer', 16, 14);
+        g.destroy();
+
+        // SKELETON_KING - undead ruler
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        g.fillStyle(0xccccbb);
+        g.fillRect(6, 4, 10, 14);
+        g.fillStyle(0xbbbbaa);
+        g.fillRect(4, 8, 4, 8);
+        g.fillRect(14, 8, 4, 8);
+        g.fillStyle(0xddddcc);
+        g.fillRect(8, 0, 6, 5);
+        g.fillStyle(0xff0000);
+        g.fillRect(9, 2, 2, 2);
+        g.fillRect(12, 2, 2, 2);
+        g.fillStyle(0xffcc00);
+        g.fillRect(9, 0, 4, 2);
+        g.fillStyle(0x888888);
+        g.fillRect(0, 6, 4, 8);
+        g.generateTexture('enemy_skeleton_king', 22, 18);
+        g.destroy();
+
+        // DRAGON - legendary beast
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        g.fillStyle(0xcc4422);
+        g.fillRect(6, 6, 14, 12);
+        g.fillStyle(0xaa3311);
+        g.fillRect(0, 4, 8, 8);
+        g.fillRect(18, 4, 8, 8);
+        g.fillStyle(0xdd5533);
+        g.fillRect(8, 0, 8, 7);
+        g.fillStyle(0xffff00);
+        g.fillRect(10, 2, 2, 2);
+        g.fillRect(13, 2, 2, 2);
+        g.fillStyle(0xff8800);
+        g.fillRect(10, 6, 4, 3);
+        g.fillStyle(0xcc4422);
+        g.fillRect(10, 18, 4, 4);
+        g.generateTexture('enemy_dragon', 26, 22);
+        g.destroy();
+
+        // ARCHDEMON - greater demon
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        g.fillStyle(0x880000);
+        g.fillRect(6, 6, 14, 14);
+        g.fillStyle(0x660000);
+        g.fillRect(4, 12, 4, 8);
+        g.fillRect(18, 12, 4, 8);
+        g.fillStyle(0xaa2222);
+        g.fillRect(4, 0, 5, 7);
+        g.fillRect(17, 0, 5, 7);
+        g.fillStyle(0xbb3333);
+        g.fillRect(9, 2, 8, 6);
+        g.fillStyle(0xffff00);
+        g.fillRect(11, 4, 2, 2);
+        g.fillRect(14, 4, 2, 2);
+        g.fillStyle(0xff6600);
+        g.fillRect(11, 8, 4, 3);
+        g.generateTexture('enemy_archdemon', 26, 20);
+        g.destroy();
+
+        // VOID_WALKER - dimension hopper
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        g.fillStyle(0x220044);
+        g.fillRect(4, 2, 8, 12);
+        g.fillStyle(0x110033);
+        g.fillRect(2, 6, 4, 6);
+        g.fillRect(10, 6, 4, 6);
+        g.fillStyle(0x8800ff);
+        g.fillRect(5, 4, 2, 2);
+        g.fillRect(9, 4, 2, 2);
+        g.fillStyle(0xff00ff);
+        g.fillRect(6, 8, 4, 2);
+        g.fillStyle(0x440088);
+        g.fillRect(0, 4, 2, 4);
+        g.fillRect(14, 4, 2, 4);
+        g.generateTexture('enemy_void_walker', 16, 14);
+        g.destroy();
+
+        // COSMIC_HORROR - eldritch being
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        g.fillStyle(0x442266);
+        g.fillRect(4, 2, 12, 10);
+        g.fillStyle(0x331155);
+        g.fillRect(0, 10, 4, 6);
+        g.fillRect(4, 12, 3, 5);
+        g.fillRect(9, 12, 3, 5);
+        g.fillRect(12, 10, 4, 6);
+        g.fillRect(16, 11, 4, 5);
+        g.fillStyle(0x00ff88);
+        g.fillRect(6, 4, 2, 2);
+        g.fillRect(9, 5, 2, 2);
+        g.fillRect(12, 4, 2, 2);
+        g.fillStyle(0xff00ff);
+        g.fillRect(8, 8, 4, 2);
+        g.generateTexture('enemy_cosmic_horror', 20, 18);
+        g.destroy();
+
+        // WORLD_EATER - ultimate enemy
+        g = this.make.graphics({ x: 0, y: 0, add: false });
+        g.fillStyle(0x111122);
+        g.fillRect(4, 4, 24, 20);
+        g.fillStyle(0x000011);
+        g.fillRect(2, 12, 4, 12);
+        g.fillRect(26, 12, 4, 12);
+        g.fillStyle(0x222244);
+        g.fillRect(10, 0, 12, 6);
+        g.fillStyle(0xff0000);
+        g.fillRect(12, 2, 3, 3);
+        g.fillRect(17, 2, 3, 3);
+        g.fillStyle(0x8800ff);
+        g.fillRect(12, 10, 8, 6);
+        g.fillStyle(0xff00ff);
+        g.fillRect(14, 12, 4, 2);
+        g.fillStyle(0x000000);
+        g.fillRect(12, 18, 8, 4);
+        g.generateTexture('enemy_world_eater', 32, 24);
+        g.destroy();
     }
 
     createPowerupTextures() {

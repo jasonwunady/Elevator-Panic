@@ -41,7 +41,67 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
             'DRAINER': 'enemy_drainer',
             'CLONER': 'enemy_cloner',
             'SHIELDER': 'enemy_shielder',
-            'BOOMER': 'enemy_boomer'
+            'BOOMER': 'enemy_boomer',
+            'WRAITH': 'enemy_wraith',
+            'SCORPION': 'enemy_scorpion',
+            'PRISM': 'enemy_prism',
+            'INFERNO': 'enemy_inferno',
+            'GOLEM': 'enemy_golem',
+            'JESTER': 'enemy_jester',
+            'HYDRA': 'enemy_hydra',
+            'MIRAGE_NEW': 'enemy_mirage',
+            'TITAN': 'enemy_titan',
+            'SPARK': 'enemy_spark',
+            // 50 MORE ENEMIES
+            'VIPER': 'enemy_viper',
+            'CYCLOPS': 'enemy_cyclops',
+            'WASP': 'enemy_wasp',
+            'MUMMY': 'enemy_mummy',
+            'DJINN': 'enemy_djinn',
+            'GARGOYLE': 'enemy_gargoyle',
+            'BASILISK': 'enemy_basilisk',
+            'BANSHEE': 'enemy_banshee',
+            'PHOENIX': 'enemy_phoenix',
+            'LICH': 'enemy_lich',
+            'WENDIGO': 'enemy_wendigo',
+            'CERBERUS': 'enemy_cerberus',
+            'WYVERN': 'enemy_wyvern',
+            'MINOTAUR': 'enemy_minotaur',
+            'SPECTER': 'enemy_specter',
+            'CHIMERA': 'enemy_chimera',
+            'REAPER': 'enemy_reaper',
+            'OGRE': 'enemy_ogre',
+            'HARPY': 'enemy_harpy',
+            'TROLL': 'enemy_troll',
+            'KRAKEN': 'enemy_kraken',
+            'DEMON': 'enemy_demon',
+            'ELEMENTAL': 'enemy_elemental',
+            'WYRM': 'enemy_wyrm',
+            'SHADE': 'enemy_shade',
+            'FUNGOID': 'enemy_fungoid',
+            'SENTINEL': 'enemy_sentinel',
+            'SLIME_KING': 'enemy_slime_king',
+            'BEETLE': 'enemy_beetle',
+            'WRECKER': 'enemy_wrecker',
+            'ORACLE': 'enemy_oracle',
+            'GOLIATH': 'enemy_goliath',
+            'ASSASSIN': 'enemy_assassin',
+            'PLAGUE': 'enemy_plague',
+            'PHANTOM': 'enemy_phantom',
+            'BRUTE': 'enemy_brute',
+            'SIREN': 'enemy_siren',
+            'COLOSSUS': 'enemy_colossus',
+            'REVENANT': 'enemy_revenant',
+            'GOLEM_FIRE': 'enemy_golem_fire',
+            'GOLEM_ICE': 'enemy_golem_ice',
+            'VAMPIRE_LORD': 'enemy_vampire_lord',
+            'NECROMANCER': 'enemy_necromancer',
+            'SKELETON_KING': 'enemy_skeleton_king',
+            'DRAGON': 'enemy_dragon',
+            'ARCHDEMON': 'enemy_archdemon',
+            'VOID_WALKER': 'enemy_void_walker',
+            'COSMIC_HORROR': 'enemy_cosmic_horror',
+            'WORLD_EATER': 'enemy_world_eater'
         };
 
         super(scene, x, y, textureMap[type] || 'enemy_rusher');
@@ -289,6 +349,285 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
                 this.setTint(0xff4400);
                 this.boomTimer = this.config.BOOM_DELAY;
                 this.isBooming = false;
+                break;
+
+            // ========== 10 NEW ENEMY TYPES ==========
+
+            case 'WRAITH':
+                this.setTint(0x4466aa);
+                this.fadeTimer = 0;
+                this.isFaded = false;
+                this.setAlpha(0.85);
+                if (this.body) this.setGravityY(-100); // Floats
+                break;
+
+            case 'SCORPION':
+                this.setTint(0x884422);
+                this.stingCooldown = 0;
+                this.isPoisoned = false;
+                break;
+
+            case 'PRISM':
+                this.setTint(0xaaddff);
+                this.reflectCount = 2; // Can reflect 2 kicks
+                break;
+
+            case 'INFERNO':
+                this.setTint(0xff6600);
+                this.burnRadius = this.config.BURN_RADIUS || 30;
+                this.burnDamage = true;
+                break;
+
+            case 'GOLEM':
+                this.setTint(0x666666);
+                if (this.body) this.setDrag(400);
+                this.stunResistance = 3; // Takes 3 hits to move
+                break;
+
+            case 'JESTER':
+                this.setTint(0xaa22aa);
+                this.chaosTimer = 0;
+                this.movementPattern = 0;
+                break;
+
+            case 'HYDRA':
+                this.setTint(0x228844);
+                this.headCount = 3;
+                this.biteCooldown = 0;
+                break;
+
+            case 'MIRAGE_NEW':
+                this.setTint(0x8888cc);
+                this.illusionCooldown = 0;
+                this.illusionCount = 0;
+                break;
+
+            case 'TITAN':
+                this.setTint(0x884444);
+                if (this.body) this.setDrag(350);
+                this.slamCooldown = 0;
+                break;
+
+            case 'SPARK':
+                this.setTint(0xffff00);
+                this.setScale(0.8);
+                this.zigzagTimer = 0;
+                this.zigzagDir = 1;
+                if (this.body) this.setBounce(1.5);
+                break;
+
+            // ========== 50 MORE ENEMY SETUPS ==========
+            case 'VIPER':
+                this.setTint(0x44aa44);
+                this.strikeReady = true;
+                break;
+            case 'CYCLOPS':
+                this.setTint(0x8866aa);
+                this.eyeBeamCooldown = 0;
+                break;
+            case 'WASP':
+                this.setTint(0xffcc00);
+                if (this.body) this.setGravityY(-200);
+                this.diveCooldown = 0;
+                break;
+            case 'MUMMY':
+                this.setTint(0xccbb99);
+                this.curseCooldown = 0;
+                break;
+            case 'DJINN':
+                this.setTint(0x4488ff);
+                this.wishCooldown = 0;
+                if (this.body) this.setGravityY(-100);
+                break;
+            case 'GARGOYLE':
+                this.setTint(0x555566);
+                if (this.body) this.setGravityY(-150);
+                this.divebombReady = true;
+                break;
+            case 'BASILISK':
+                this.setTint(0x448844);
+                this.gazeCooldown = 0;
+                break;
+            case 'BANSHEE':
+                this.setTint(0xddddff);
+                this.screamCooldown = 0;
+                break;
+            case 'PHOENIX':
+                this.setTint(0xff6600);
+                this.hasRevived = false;
+                if (this.body) this.setGravityY(-100);
+                break;
+            case 'LICH':
+                this.setTint(0x2222aa);
+                this.summonCooldown = 0;
+                break;
+            case 'WENDIGO':
+                this.setTint(0xaaddff);
+                this.freezeAuraCooldown = 0;
+                break;
+            case 'CERBERUS':
+                this.setTint(0x442222);
+                this.biteCooldown = 0;
+                break;
+            case 'WYVERN':
+                this.setTint(0x664488);
+                if (this.body) this.setGravityY(-120);
+                this.tailStrikeCooldown = 0;
+                break;
+            case 'MINOTAUR':
+                this.setTint(0x884422);
+                this.isCharging = false;
+                this.chargeCooldown = 0;
+                break;
+            case 'SPECTER':
+                this.setTint(0x6688aa);
+                this.setAlpha(0.6);
+                this.fadeTimer = 0;
+                break;
+            case 'CHIMERA':
+                this.setTint(0xaa6644);
+                this.attackMode = 0;
+                this.modeSwitchTimer = 0;
+                break;
+            case 'REAPER':
+                this.setTint(0x111111);
+                this.deathTouchActive = true;
+                break;
+            case 'OGRE':
+                this.setTint(0x66aa66);
+                this.smashCooldown = 0;
+                break;
+            case 'HARPY':
+                this.setTint(0xddaa88);
+                if (this.body) this.setGravityY(-180);
+                this.swoopCooldown = 0;
+                break;
+            case 'TROLL':
+                this.setTint(0x557755);
+                this.regenTimer = 0;
+                this.maxHealth = this.health;
+                break;
+            case 'KRAKEN':
+                this.setTint(0x446688);
+                this.tentacleCooldown = 0;
+                break;
+            case 'DEMON':
+                this.setTint(0xaa2222);
+                this.fireballCooldown = 0;
+                break;
+            case 'ELEMENTAL':
+                this.setTint(0x44ddff);
+                this.elementType = 0;
+                this.elementSwitchTimer = 0;
+                break;
+            case 'WYRM':
+                this.setTint(0x668844);
+                this.constrictCooldown = 0;
+                break;
+            case 'SHADE':
+                this.setTint(0x222233);
+                this.setAlpha(0.5);
+                break;
+            case 'FUNGOID':
+                this.setTint(0xcc8866);
+                this.sporeCooldown = 0;
+                break;
+            case 'SENTINEL':
+                this.setTint(0x888899);
+                this.shieldUp = true;
+                break;
+            case 'SLIME_KING':
+                this.setTint(0x44dd44);
+                this.hasSplit = false;
+                break;
+            case 'BEETLE':
+                this.setTint(0x224466);
+                this.shellUp = false;
+                break;
+            case 'WRECKER':
+                this.setTint(0xcc6600);
+                this.smashCooldown = 0;
+                break;
+            case 'ORACLE':
+                this.setTint(0x8844aa);
+                this.predictTimer = 0;
+                break;
+            case 'GOLIATH':
+                this.setTint(0x556677);
+                this.stompCooldown = 0;
+                break;
+            case 'ASSASSIN':
+                this.setTint(0x333344);
+                this.isHidden = true;
+                this.setAlpha(0.2);
+                break;
+            case 'PLAGUE':
+                this.setTint(0x557722);
+                this.poisonCooldown = 0;
+                break;
+            case 'PHANTOM':
+                this.setTint(0x4455aa);
+                this.setAlpha(0.3);
+                this.visibilityTimer = 0;
+                break;
+            case 'BRUTE':
+                this.setTint(0x994444);
+                this.punchCooldown = 0;
+                break;
+            case 'SIREN':
+                this.setTint(0x44aaaa);
+                this.songCooldown = 0;
+                break;
+            case 'COLOSSUS':
+                this.setTint(0x777788);
+                this.stompCooldown = 0;
+                break;
+            case 'REVENANT':
+                this.setTint(0x445544);
+                this.hasRevived = false;
+                break;
+            case 'GOLEM_FIRE':
+                this.setTint(0xff6600);
+                this.burnCooldown = 0;
+                break;
+            case 'GOLEM_ICE':
+                this.setTint(0x88ccff);
+                this.freezeCooldown = 0;
+                break;
+            case 'VAMPIRE_LORD':
+                this.setTint(0x440033);
+                this.drainCooldown = 0;
+                this.batFormCooldown = 0;
+                break;
+            case 'NECROMANCER':
+                this.setTint(0x222244);
+                this.raiseCooldown = 0;
+                break;
+            case 'SKELETON_KING':
+                this.setTint(0xccccbb);
+                this.commandCooldown = 0;
+                break;
+            case 'DRAGON':
+                this.setTint(0xcc4422);
+                this.breathCooldown = 0;
+                if (this.body) this.setGravityY(-50);
+                break;
+            case 'ARCHDEMON':
+                this.setTint(0x880000);
+                this.infernoCooldown = 0;
+                break;
+            case 'VOID_WALKER':
+                this.setTint(0x220044);
+                this.blinkCooldown = 0;
+                break;
+            case 'COSMIC_HORROR':
+                this.setTint(0x442266);
+                this.madnessCooldown = 0;
+                break;
+            case 'WORLD_EATER':
+                this.setTint(0x111122);
+                this.devourCooldown = 0;
+                this.isEnraged = false;
                 break;
         }
     }
@@ -871,6 +1210,91 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
                 break;
             case 'BOOMER':
                 this.boomerBehavior(player);
+                break;
+
+            // ========== 10 NEW ENEMY BEHAVIORS ==========
+            case 'WRAITH':
+                this.wraithBehavior(player);
+                break;
+            case 'SCORPION':
+                this.scorpionBehavior(player);
+                break;
+            case 'PRISM':
+                this.prismBehavior(player);
+                break;
+            case 'INFERNO':
+                this.infernoBehavior(player);
+                break;
+            case 'GOLEM':
+                this.golemBehavior(player);
+                break;
+            case 'JESTER':
+                this.jesterBehavior(player);
+                break;
+            case 'HYDRA':
+                this.hydraBehavior(player);
+                break;
+            case 'MIRAGE_NEW':
+                this.mirageNewBehavior(player);
+                break;
+            case 'TITAN':
+                this.titanBehavior(player);
+                break;
+            case 'SPARK':
+                this.sparkBehavior(player);
+                break;
+
+            // ========== 50 MORE ENEMY BEHAVIORS ==========
+            case 'VIPER':
+            case 'CYCLOPS':
+            case 'WASP':
+            case 'MUMMY':
+            case 'DJINN':
+            case 'GARGOYLE':
+            case 'BASILISK':
+            case 'BANSHEE':
+            case 'PHOENIX':
+            case 'LICH':
+            case 'WENDIGO':
+            case 'CERBERUS':
+            case 'WYVERN':
+            case 'MINOTAUR':
+            case 'SPECTER':
+            case 'CHIMERA':
+            case 'REAPER':
+            case 'OGRE':
+            case 'HARPY':
+            case 'TROLL':
+            case 'KRAKEN':
+            case 'DEMON':
+            case 'ELEMENTAL':
+            case 'WYRM':
+            case 'SHADE':
+            case 'FUNGOID':
+            case 'SENTINEL':
+            case 'SLIME_KING':
+            case 'BEETLE':
+            case 'WRECKER':
+            case 'ORACLE':
+            case 'GOLIATH':
+            case 'ASSASSIN':
+            case 'PLAGUE':
+            case 'PHANTOM':
+            case 'BRUTE':
+            case 'SIREN':
+            case 'COLOSSUS':
+            case 'REVENANT':
+            case 'GOLEM_FIRE':
+            case 'GOLEM_ICE':
+            case 'VAMPIRE_LORD':
+            case 'NECROMANCER':
+            case 'SKELETON_KING':
+            case 'DRAGON':
+            case 'ARCHDEMON':
+            case 'VOID_WALKER':
+            case 'COSMIC_HORROR':
+            case 'WORLD_EATER':
+                this.advancedEnemyBehavior(player);
                 break;
         }
     }
@@ -1907,9 +2331,6 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.scene.time.delayedCall(100, () => {
             if (player.active) player.clearTint();
         });
-
-        // Screen flash
-        this.scene.cameras.main.flash(50, 255, 255, 0);
     }
 
     // BLOB - Leaves slime trails that slow player and splits when killed
@@ -2430,8 +2851,6 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         }
 
         // Epic explosion effect!
-        // Core flash
-        this.scene.cameras.main.flash(100, 255, 100, 0);
         this.scene.cameras.main.shake(200, 0.02);
 
         // Explosion ring
@@ -2722,6 +3141,709 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         if (this.isKicked) return; // Don't damage if being kicked away
 
         player.takeDamage(this.enemyType);
+    }
+
+    // ========== 10 NEW ENEMY BEHAVIOR METHODS ==========
+
+    wraithBehavior(player) {
+        const direction = player.x > this.x ? 1 : -1;
+        this.setFlipX(direction < 0);
+
+        // Update fade timer
+        this.fadeTimer -= 16;
+        if (this.fadeTimer <= 0) {
+            this.isFaded = !this.isFaded;
+            this.fadeTimer = 2000;
+
+            if (this.isFaded) {
+                this.setTexture('enemy_wraith_fade');
+                this.setAlpha(0.3);
+                if (this.body) this.body.enable = false;
+            } else {
+                this.setTexture('enemy_wraith');
+                this.setAlpha(0.85);
+                if (this.body) this.body.enable = true;
+            }
+        }
+
+        // Float toward player even while faded
+        if (this.body && this.body.enable) {
+            this.setVelocityX(direction * (this.config.SPEED || 40));
+        }
+
+        // Eerie floating motion
+        const floatY = Math.sin(this.scene.time.now * 0.002) * 30;
+        if (this.body && !this.body.blocked.up && !this.body.blocked.down) {
+            this.setVelocityY(floatY);
+        }
+    }
+
+    scorpionBehavior(player) {
+        const direction = player.x > this.x ? 1 : -1;
+        this.setFlipX(direction < 0);
+        this.setVelocityX(direction * (this.config.SPEED || 50));
+
+        // Sting attack when close
+        this.stingCooldown -= 16;
+        const dist = Phaser.Math.Distance.Between(this.x, this.y, player.x, player.y);
+        if (this.stingCooldown <= 0 && dist < 40) {
+            this.stingAttack(player);
+            this.stingCooldown = 2000;
+        }
+    }
+
+    stingAttack(player) {
+        if (!player || !player.active || player.isInvincible) return;
+
+        // Visual sting effect
+        const stinger = this.scene.add.circle(this.x, this.y - 10, 4, 0xff4400);
+        const targetX = player.x;
+        const targetY = player.y;
+        this.scene.tweens.add({
+            targets: stinger,
+            x: targetX, y: targetY,
+            duration: 100,
+            onComplete: () => {
+                if (stinger.active) stinger.destroy();
+                // Poison effect - slow player
+                if (player.active && !player.isPoisoned) {
+                    player.isPoisoned = true;
+                    player.setTint(0x88ff88);
+                    const originalSpeed = player.moveSpeed;
+                    player.moveSpeed *= 0.5;
+                    this.scene.time.delayedCall(3000, () => {
+                        if (player.active) {
+                            player.isPoisoned = false;
+                            player.moveSpeed = originalSpeed;
+                            player.clearTint();
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    prismBehavior(player) {
+        const direction = player.x > this.x ? 1 : -1;
+        this.setFlipX(direction < 0);
+        this.setVelocityX(direction * (this.config.SPEED || 35));
+
+        // Sparkle effect
+        if (Math.random() < 0.05) {
+            const colors = [0xff6666, 0xffff66, 0x66ff66, 0x66ffff, 0x6666ff, 0xff66ff];
+            const sparkle = this.scene.add.circle(
+                this.x + Phaser.Math.Between(-8, 8),
+                this.y + Phaser.Math.Between(-8, 8),
+                2, Phaser.Utils.Array.GetRandom(colors), 0.8
+            );
+            this.scene.tweens.add({
+                targets: sparkle,
+                alpha: 0, scale: 2,
+                duration: 300,
+                onComplete: () => { if (sparkle.active) sparkle.destroy(); }
+            });
+        }
+    }
+
+    infernoBehavior(player) {
+        const direction = player.x > this.x ? 1 : -1;
+        this.setFlipX(direction < 0);
+        this.setVelocityX(direction * (this.config.SPEED || 55));
+
+        // Leave fire trail
+        if (Math.random() < 0.15) {
+            const fire = this.scene.add.circle(this.x, this.y + 8, 4, 0xff6600, 0.7);
+            this.scene.tweens.add({
+                targets: fire,
+                y: fire.y + 5, alpha: 0, scale: 0.5,
+                duration: 400,
+                onComplete: () => { if (fire.active) fire.destroy(); }
+            });
+        }
+
+        // Burn player if too close
+        const dist = Phaser.Math.Distance.Between(this.x, this.y, player.x, player.y);
+        if (dist < 30 && !player.isInvincible && Math.random() < 0.02) {
+            player.takeDamage('INFERNO');
+        }
+    }
+
+    golemBehavior(player) {
+        const direction = player.x > this.x ? 1 : -1;
+        this.setFlipX(direction < 0);
+
+        // Very slow but steady
+        this.setVelocityX(direction * (this.config.SPEED || 20));
+
+        // Ground pound when player is close
+        const dist = Phaser.Math.Distance.Between(this.x, this.y, player.x, player.y);
+        if (this.body && this.body.blocked.down && dist < 50 && Math.random() < 0.01) {
+            // Stomp effect
+            this.scene.cameras.main.shake(100, 0.01);
+            for (let i = 0; i < 6; i++) {
+                const debris = this.scene.add.rectangle(
+                    this.x + Phaser.Math.Between(-20, 20),
+                    this.y + 10,
+                    4, 4, 0x666666
+                );
+                this.scene.tweens.add({
+                    targets: debris,
+                    y: debris.y + Phaser.Math.Between(10, 30),
+                    alpha: 0,
+                    duration: 300,
+                    onComplete: () => { if (debris.active) debris.destroy(); }
+                });
+            }
+        }
+    }
+
+    jesterBehavior(player) {
+        // Chaotic unpredictable movement
+        this.chaosTimer -= 16;
+        if (this.chaosTimer <= 0) {
+            this.movementPattern = Math.floor(Math.random() * 4);
+            this.chaosTimer = Phaser.Math.Between(500, 1500);
+        }
+
+        const speed = this.config.SPEED || 80;
+        switch (this.movementPattern) {
+            case 0: // Chase player
+                const direction = player.x > this.x ? 1 : -1;
+                this.setVelocityX(direction * speed);
+                this.setFlipX(direction < 0);
+                break;
+            case 1: // Run away
+                const awayDir = player.x > this.x ? -1 : 1;
+                this.setVelocityX(awayDir * speed);
+                this.setFlipX(awayDir < 0);
+                break;
+            case 2: // Random hop
+                if (this.body && this.body.blocked.down) {
+                    this.setVelocity(Phaser.Math.Between(-100, 100), -200);
+                }
+                break;
+            case 3: // Stop and laugh
+                this.setVelocityX(0);
+                break;
+        }
+    }
+
+    hydraBehavior(player) {
+        const direction = player.x > this.x ? 1 : -1;
+        this.setFlipX(direction < 0);
+        this.setVelocityX(direction * (this.config.SPEED || 40));
+
+        // Triple bite attack
+        this.biteCooldown -= 16;
+        const dist = Phaser.Math.Distance.Between(this.x, this.y, player.x, player.y);
+        if (this.biteCooldown <= 0 && dist < 60) {
+            this.hydraBite(player);
+            this.biteCooldown = 1500;
+        }
+    }
+
+    hydraBite(player) {
+        // Three snap attacks from each head
+        for (let i = 0; i < 3; i++) {
+            this.scene.time.delayedCall(i * 100, () => {
+                if (!this.active) return;
+                const offsetX = (i - 1) * 15;
+                const snap = this.scene.add.text(this.x + offsetX, this.y - 10, '!', {
+                    fontSize: '16px',
+                    color: '#ff0000'
+                }).setOrigin(0.5);
+                this.scene.tweens.add({
+                    targets: snap,
+                    y: snap.y - 15, alpha: 0,
+                    duration: 200,
+                    onComplete: () => { if (snap.active) snap.destroy(); }
+                });
+            });
+        }
+    }
+
+    mirageNewBehavior(player) {
+        const direction = player.x > this.x ? 1 : -1;
+        this.setFlipX(direction < 0);
+        this.setVelocityX(direction * (this.config.SPEED || 45));
+
+        // Create illusions periodically
+        this.illusionCooldown -= 16;
+        if (this.illusionCooldown <= 0 && this.illusionCount < 2) {
+            this.createIllusion();
+            this.illusionCooldown = 3000;
+            this.illusionCount++;
+        }
+
+        // Shimmer effect
+        this.setAlpha(0.7 + Math.sin(this.scene.time.now * 0.01) * 0.2);
+    }
+
+    createIllusion() {
+        if (!this.scene || !this.active) return;
+
+        // Create a fake mirage that looks like this enemy but fades
+        const illusion = this.scene.add.sprite(this.x, this.y, 'enemy_mirage');
+        illusion.setAlpha(0.5);
+        illusion.setTint(0xaaaaff);
+
+        // Move in random direction
+        const angle = Math.random() * Math.PI * 2;
+        this.scene.tweens.add({
+            targets: illusion,
+            x: this.x + Math.cos(angle) * 50,
+            y: this.y + Math.sin(angle) * 50,
+            alpha: 0,
+            duration: 2000,
+            onComplete: () => {
+                if (illusion.active) illusion.destroy();
+                this.illusionCount = Math.max(0, this.illusionCount - 1);
+            }
+        });
+    }
+
+    titanBehavior(player) {
+        const direction = player.x > this.x ? 1 : -1;
+        this.setFlipX(direction < 0);
+
+        // Very slow but powerful
+        this.setVelocityX(direction * (this.config.SPEED || 15));
+
+        // Ground slam attack
+        this.slamCooldown -= 16;
+        const dist = Phaser.Math.Distance.Between(this.x, this.y, player.x, player.y);
+        if (this.slamCooldown <= 0 && dist < 80) {
+            this.titanSlam(player);
+            this.slamCooldown = 3000;
+        }
+    }
+
+    titanSlam(player) {
+        if (!this.scene || !this.active) return;
+
+        // Warning
+        this.setTint(0xffff00);
+        this.scene.time.delayedCall(300, () => {
+            if (!this.active) return;
+            this.setTint(0x884444);
+
+            // Slam effect
+            this.scene.cameras.main.shake(200, 0.02);
+
+            // Shockwave
+            const shockwave = this.scene.add.circle(this.x, this.y + 10, 10, 0xffaa00, 0.6);
+            this.scene.tweens.add({
+                targets: shockwave,
+                scale: 8, alpha: 0,
+                duration: 400,
+                onComplete: () => { if (shockwave.active) shockwave.destroy(); }
+            });
+
+            // Knockback player if close
+            const dist = Phaser.Math.Distance.Between(this.x, this.y, player.x, player.y);
+            if (dist < 80 && player.body) {
+                const angle = Phaser.Math.Angle.Between(this.x, this.y, player.x, player.y);
+                player.setVelocity(Math.cos(angle) * 200, -200);
+            }
+        });
+    }
+
+    sparkBehavior(player) {
+        // Erratic zigzag movement
+        this.zigzagTimer -= 16;
+        if (this.zigzagTimer <= 0) {
+            this.zigzagDir *= -1;
+            this.zigzagTimer = Phaser.Math.Between(100, 300);
+        }
+
+        // Fast and erratic
+        const baseDirection = player.x > this.x ? 1 : -1;
+        this.setVelocityX(baseDirection * (this.config.SPEED || 100));
+        this.setVelocityY(this.zigzagDir * 80);
+
+        // Electric sparks
+        if (Math.random() < 0.1) {
+            const spark = this.scene.add.circle(
+                this.x + Phaser.Math.Between(-5, 5),
+                this.y + Phaser.Math.Between(-5, 5),
+                2, 0xffff00, 0.9
+            );
+            this.scene.tweens.add({
+                targets: spark,
+                alpha: 0,
+                duration: 100,
+                onComplete: () => { if (spark.active) spark.destroy(); }
+            });
+        }
+    }
+
+    // ========== ADVANCED ENEMY BEHAVIORS (50 NEW TYPES) ==========
+    advancedEnemyBehavior(player) {
+        const direction = player.x > this.x ? 1 : -1;
+        this.setFlipX(direction < 0);
+
+        switch (this.enemyType) {
+            case 'VIPER':
+                // Quick strike when close
+                const distToPlayer = Math.abs(player.x - this.x);
+                if (distToPlayer < 50 && this.strikeReady) {
+                    this.setVelocityX(direction * this.config.SPEED * 3);
+                    this.strikeReady = false;
+                    this.scene.time.delayedCall(1000, () => { this.strikeReady = true; });
+                } else {
+                    this.setVelocityX(direction * this.config.SPEED * 0.5);
+                }
+                break;
+
+            case 'CYCLOPS':
+                // Slow but powerful, occasional eye beam effect
+                this.setVelocityX(direction * this.config.SPEED);
+                this.eyeBeamCooldown -= 16;
+                if (this.eyeBeamCooldown <= 0) {
+                    this.eyeBeamCooldown = 3000;
+                    this.createEyeBeamEffect(direction);
+                }
+                break;
+
+            case 'WASP':
+                // Flying stinger
+                this.setVelocityX(direction * this.config.SPEED);
+                const floatY = Math.sin(this.scene.time.now * 0.005) * 60;
+                if (this.body && !this.body.blocked.up && !this.body.blocked.down) {
+                    this.setVelocityY(floatY);
+                }
+                break;
+
+            case 'MUMMY':
+                // Slow shamble
+                this.setVelocityX(direction * this.config.SPEED);
+                break;
+
+            case 'DJINN':
+                // Floats and moves unpredictably
+                this.setVelocityX(direction * this.config.SPEED);
+                const djinnFloat = Math.sin(this.scene.time.now * 0.004) * 40;
+                if (this.body) this.setVelocityY(djinnFloat);
+                break;
+
+            case 'GARGOYLE':
+                // Flies and divebombs
+                const gargoyleFloat = Math.sin(this.scene.time.now * 0.003) * 30;
+                this.setVelocityX(direction * this.config.SPEED);
+                if (this.body && !this.body.blocked.down) {
+                    this.setVelocityY(gargoyleFloat);
+                }
+                break;
+
+            case 'BASILISK':
+                // Slithers toward player
+                this.setVelocityX(direction * this.config.SPEED);
+                break;
+
+            case 'BANSHEE':
+                // Floats eerily
+                this.setVelocityX(direction * this.config.SPEED);
+                this.setAlpha(0.5 + Math.sin(this.scene.time.now * 0.005) * 0.3);
+                break;
+
+            case 'PHOENIX':
+                // Flies with fire trail
+                this.setVelocityX(direction * this.config.SPEED);
+                const phoenixFloat = Math.sin(this.scene.time.now * 0.004) * 35;
+                if (this.body) this.setVelocityY(phoenixFloat);
+                break;
+
+            case 'LICH':
+                // Slow moving mage
+                this.setVelocityX(direction * this.config.SPEED);
+                break;
+
+            case 'WENDIGO':
+                // Stalks player
+                this.setVelocityX(direction * this.config.SPEED);
+                break;
+
+            case 'CERBERUS':
+                // Aggressive triple-threat
+                this.setVelocityX(direction * this.config.SPEED * 1.2);
+                break;
+
+            case 'WYVERN':
+                // Flying beast
+                this.setVelocityX(direction * this.config.SPEED);
+                const wyvernFloat = Math.sin(this.scene.time.now * 0.003) * 40;
+                if (this.body) this.setVelocityY(wyvernFloat);
+                break;
+
+            case 'MINOTAUR':
+                // Charges like CHARGER
+                if (!this.isCharging) {
+                    this.chargeCooldown -= 16;
+                    if (this.chargeCooldown <= 0) {
+                        this.isCharging = true;
+                        this.chargeDirection = direction;
+                        this.scene.time.delayedCall(1500, () => {
+                            this.isCharging = false;
+                            this.chargeCooldown = 2000;
+                        });
+                    }
+                    this.setVelocityX(direction * this.config.SPEED * 0.5);
+                } else {
+                    this.setVelocityX(this.chargeDirection * this.config.SPEED * 2.5);
+                }
+                break;
+
+            case 'SPECTER':
+                // Fades in and out
+                this.fadeTimer += 16;
+                this.setAlpha(0.3 + Math.sin(this.fadeTimer * 0.003) * 0.4);
+                this.setVelocityX(direction * this.config.SPEED);
+                break;
+
+            case 'CHIMERA':
+                // Switches attack modes
+                this.modeSwitchTimer += 16;
+                if (this.modeSwitchTimer > 3000) {
+                    this.attackMode = (this.attackMode + 1) % 3;
+                    this.modeSwitchTimer = 0;
+                }
+                this.setVelocityX(direction * this.config.SPEED * (1 + this.attackMode * 0.3));
+                break;
+
+            case 'REAPER':
+                // Glides slowly but deadly
+                this.setVelocityX(direction * this.config.SPEED);
+                break;
+
+            case 'OGRE':
+                // Lumbers toward player
+                this.setVelocityX(direction * this.config.SPEED);
+                break;
+
+            case 'HARPY':
+                // Swoops from above
+                this.setVelocityX(direction * this.config.SPEED);
+                const harpyFloat = Math.sin(this.scene.time.now * 0.006) * 50;
+                if (this.body) this.setVelocityY(harpyFloat);
+                break;
+
+            case 'TROLL':
+                // Regenerates health slowly
+                this.regenTimer += 16;
+                if (this.regenTimer > 2000 && this.health < this.maxHealth) {
+                    this.health++;
+                    this.regenTimer = 0;
+                }
+                this.setVelocityX(direction * this.config.SPEED);
+                break;
+
+            case 'KRAKEN':
+                // Tentacle movements
+                this.setVelocityX(direction * this.config.SPEED);
+                break;
+
+            case 'DEMON':
+                // Aggressive fire creature
+                this.setVelocityX(direction * this.config.SPEED);
+                break;
+
+            case 'ELEMENTAL':
+                // Shifts through elements
+                this.elementSwitchTimer += 16;
+                if (this.elementSwitchTimer > 2000) {
+                    this.elementType = (this.elementType + 1) % 4;
+                    const colors = [0x44ddff, 0xff6600, 0x44ff44, 0x884400];
+                    this.setTint(colors[this.elementType]);
+                    this.elementSwitchTimer = 0;
+                }
+                this.setVelocityX(direction * this.config.SPEED);
+                break;
+
+            case 'WYRM':
+                // Serpentine movement
+                this.setVelocityX(direction * this.config.SPEED);
+                break;
+
+            case 'SHADE':
+                // Mimics player direction
+                this.setVelocityX(direction * this.config.SPEED);
+                break;
+
+            case 'FUNGOID':
+                // Slow spore spreader
+                this.setVelocityX(direction * this.config.SPEED);
+                break;
+
+            case 'SENTINEL':
+                // Guarded approach
+                this.setVelocityX(direction * this.config.SPEED);
+                break;
+
+            case 'SLIME_KING':
+                // Bouncy movement
+                this.setVelocityX(direction * this.config.SPEED);
+                if (this.body && this.body.blocked.down) {
+                    this.setVelocityY(-150);
+                }
+                break;
+
+            case 'BEETLE':
+                // Scurries quickly
+                this.setVelocityX(direction * this.config.SPEED);
+                break;
+
+            case 'WRECKER':
+                // Destructive robot
+                this.setVelocityX(direction * this.config.SPEED);
+                break;
+
+            case 'ORACLE':
+                // Predicts and dodges
+                this.setVelocityX(direction * this.config.SPEED);
+                break;
+
+            case 'GOLIATH':
+                // Massive and slow
+                this.setVelocityX(direction * this.config.SPEED);
+                break;
+
+            case 'ASSASSIN':
+                // Fast and sneaky
+                if (this.isHidden) {
+                    const distToTarget = Math.abs(player.x - this.x);
+                    if (distToTarget < 60) {
+                        this.isHidden = false;
+                        this.setAlpha(1);
+                        this.setVelocityX(direction * this.config.SPEED * 2);
+                    } else {
+                        this.setVelocityX(direction * this.config.SPEED * 0.5);
+                    }
+                } else {
+                    this.setVelocityX(direction * this.config.SPEED);
+                }
+                break;
+
+            case 'PLAGUE':
+                // Poison spreader
+                this.setVelocityX(direction * this.config.SPEED);
+                break;
+
+            case 'PHANTOM':
+                // Nearly invisible
+                this.visibilityTimer += 16;
+                this.setAlpha(0.15 + Math.sin(this.visibilityTimer * 0.002) * 0.15);
+                this.setVelocityX(direction * this.config.SPEED);
+                break;
+
+            case 'BRUTE':
+                // Heavy hitter
+                this.setVelocityX(direction * this.config.SPEED);
+                break;
+
+            case 'SIREN':
+                // Hypnotic movement
+                this.setVelocityX(direction * this.config.SPEED);
+                break;
+
+            case 'COLOSSUS':
+                // Slow giant
+                this.setVelocityX(direction * this.config.SPEED);
+                break;
+
+            case 'REVENANT':
+                // Undead warrior
+                this.setVelocityX(direction * this.config.SPEED);
+                break;
+
+            case 'GOLEM_FIRE':
+                // Burning golem
+                this.setVelocityX(direction * this.config.SPEED);
+                break;
+
+            case 'GOLEM_ICE':
+                // Freezing golem
+                this.setVelocityX(direction * this.config.SPEED);
+                break;
+
+            case 'VAMPIRE_LORD':
+                // Master vampire
+                this.setVelocityX(direction * this.config.SPEED);
+                break;
+
+            case 'NECROMANCER':
+                // Death mage
+                this.setVelocityX(direction * this.config.SPEED);
+                break;
+
+            case 'SKELETON_KING':
+                // Undead ruler
+                this.setVelocityX(direction * this.config.SPEED);
+                break;
+
+            case 'DRAGON':
+                // Flying flame beast
+                this.setVelocityX(direction * this.config.SPEED);
+                const dragonFloat = Math.sin(this.scene.time.now * 0.002) * 30;
+                if (this.body) this.setVelocityY(dragonFloat);
+                break;
+
+            case 'ARCHDEMON':
+                // Greater demon
+                this.setVelocityX(direction * this.config.SPEED);
+                break;
+
+            case 'VOID_WALKER':
+                // Teleports randomly
+                this.blinkCooldown -= 16;
+                if (this.blinkCooldown <= 0) {
+                    this.blinkCooldown = 2000;
+                    const elevator = this.scene.elevator;
+                    if (elevator) {
+                        const bounds = elevator.getElevatorBounds();
+                        this.x = Phaser.Math.Between(bounds.left + 20, bounds.right - 20);
+                    }
+                }
+                this.setVelocityX(direction * this.config.SPEED);
+                break;
+
+            case 'COSMIC_HORROR':
+                // Eldritch tentacle movements
+                this.setVelocityX(direction * this.config.SPEED);
+                break;
+
+            case 'WORLD_EATER':
+                // Ultimate boss - enrages at low health
+                if (!this.isEnraged && this.health < 5) {
+                    this.isEnraged = true;
+                    this.setTint(0xff0000);
+                    this.config.SPEED *= 2;
+                }
+                this.setVelocityX(direction * this.config.SPEED);
+                break;
+
+            default:
+                this.setVelocityX(direction * this.config.SPEED);
+        }
+    }
+
+    createEyeBeamEffect(direction) {
+        if (!this.scene || !this.active) return;
+        const beam = this.scene.add.rectangle(
+            this.x + direction * 30,
+            this.y,
+            60,
+            4,
+            0xff0000,
+            0.8
+        );
+        beam.setDepth(95);
+        this.scene.tweens.add({
+            targets: beam,
+            scaleX: 2,
+            alpha: 0,
+            duration: 300,
+            onComplete: () => { if (beam.active) beam.destroy(); }
+        });
     }
 }
 

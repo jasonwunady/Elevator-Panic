@@ -871,6 +871,68 @@ class Elevator {
         if (this.currentFloor >= 70) types.push('SUMMONER');
         if (this.currentFloor >= 75) types.push('TANK');
 
+        // 10 NEW ENEMY TYPES (floors 77+)
+        if (this.currentFloor >= 77) types.push('SPARK');
+        if (this.currentFloor >= 78) types.push('WRAITH');
+        if (this.currentFloor >= 80) types.push('SCORPION');
+        if (this.currentFloor >= 82) types.push('PRISM');
+        if (this.currentFloor >= 84) types.push('INFERNO');
+        if (this.currentFloor >= 86) types.push('GOLEM');
+        if (this.currentFloor >= 88) types.push('JESTER');
+        if (this.currentFloor >= 90) types.push('HYDRA');
+        if (this.currentFloor >= 92) types.push('MIRAGE_NEW');
+        if (this.currentFloor >= 95) types.push('TITAN');
+
+        // 50 MORE ENEMY TYPES (floors 97-175)
+        if (this.currentFloor >= 97) types.push('VIPER');
+        if (this.currentFloor >= 99) types.push('CYCLOPS');
+        if (this.currentFloor >= 100) types.push('WASP');
+        if (this.currentFloor >= 102) types.push('MUMMY');
+        if (this.currentFloor >= 104) types.push('DJINN');
+        if (this.currentFloor >= 106) types.push('GARGOYLE');
+        if (this.currentFloor >= 108) types.push('BASILISK');
+        if (this.currentFloor >= 110) types.push('BANSHEE');
+        if (this.currentFloor >= 112) types.push('PHOENIX');
+        if (this.currentFloor >= 114) types.push('LICH');
+        if (this.currentFloor >= 116) types.push('WENDIGO');
+        if (this.currentFloor >= 118) types.push('CERBERUS');
+        if (this.currentFloor >= 120) types.push('WYVERN');
+        if (this.currentFloor >= 122) types.push('MINOTAUR');
+        if (this.currentFloor >= 124) types.push('SPECTER');
+        if (this.currentFloor >= 126) types.push('CHIMERA');
+        if (this.currentFloor >= 128) types.push('REAPER');
+        if (this.currentFloor >= 130) types.push('OGRE');
+        if (this.currentFloor >= 132) types.push('HARPY');
+        if (this.currentFloor >= 134) types.push('TROLL');
+        if (this.currentFloor >= 136) types.push('KRAKEN');
+        if (this.currentFloor >= 138) types.push('DEMON');
+        if (this.currentFloor >= 140) types.push('ELEMENTAL');
+        if (this.currentFloor >= 142) types.push('WYRM');
+        if (this.currentFloor >= 144) types.push('SHADE');
+        if (this.currentFloor >= 146) types.push('FUNGOID');
+        if (this.currentFloor >= 148) types.push('SENTINEL');
+        if (this.currentFloor >= 150) types.push('SLIME_KING');
+        if (this.currentFloor >= 151) types.push('BEETLE');
+        if (this.currentFloor >= 152) types.push('WRECKER');
+        if (this.currentFloor >= 153) types.push('ORACLE');
+        if (this.currentFloor >= 155) types.push('GOLIATH');
+        if (this.currentFloor >= 156) types.push('ASSASSIN');
+        if (this.currentFloor >= 157) types.push('PLAGUE');
+        if (this.currentFloor >= 158) types.push('PHANTOM');
+        if (this.currentFloor >= 159) types.push('BRUTE');
+        if (this.currentFloor >= 160) types.push('SIREN');
+        if (this.currentFloor >= 162) types.push('COLOSSUS');
+        if (this.currentFloor >= 163) types.push('REVENANT');
+        if (this.currentFloor >= 164) types.push('GOLEM_FIRE');
+        if (this.currentFloor >= 165) types.push('GOLEM_ICE');
+        if (this.currentFloor >= 166) types.push('VAMPIRE_LORD');
+        if (this.currentFloor >= 168) types.push('NECROMANCER');
+        if (this.currentFloor >= 170) types.push('SKELETON_KING');
+        if (this.currentFloor >= 172) types.push('DRAGON');
+        if (this.currentFloor >= 173) types.push('ARCHDEMON');
+        if (this.currentFloor >= 174) types.push('VOID_WALKER');
+        if (this.currentFloor >= 175) types.push('COSMIC_HORROR', 'WORLD_EATER');
+
         // Weight towards harder enemies at higher floors
         if (this.currentFloor >= 30) {
             types.push('EXPLODER', 'HEAVY', 'SPITTER', 'GHOST', 'CHARGER', 'NINJA', 'ELECTRO', 'PUSHER');
@@ -889,6 +951,34 @@ class Elevator {
         }
         if (this.currentFloor >= 80) {
             types.push('TANK', 'TANK', 'SUMMONER', 'BERSERKER', 'BERSERKER', 'CLONER', 'BLOB', 'PORTAL', 'GRAVITY');
+            types.push('SPARK', 'WRAITH', 'SCORPION');
+        }
+        if (this.currentFloor >= 90) {
+            types.push('PRISM', 'INFERNO', 'GOLEM', 'JESTER', 'HYDRA', 'MIRAGE_NEW', 'SPARK', 'SPARK');
+        }
+        if (this.currentFloor >= 95) {
+            types.push('TITAN', 'GOLEM', 'HYDRA', 'INFERNO', 'WRAITH');
+        }
+        // New high-floor weights
+        if (this.currentFloor >= 100) {
+            types.push('VIPER', 'CYCLOPS', 'WASP', 'MUMMY', 'DJINN', 'TITAN', 'TITAN');
+        }
+        if (this.currentFloor >= 120) {
+            types.push('GARGOYLE', 'BASILISK', 'BANSHEE', 'PHOENIX', 'LICH', 'WENDIGO', 'CERBERUS', 'WYVERN', 'MINOTAUR');
+        }
+        if (this.currentFloor >= 140) {
+            types.push('SPECTER', 'CHIMERA', 'REAPER', 'OGRE', 'HARPY', 'TROLL', 'KRAKEN', 'DEMON', 'ELEMENTAL', 'WYRM');
+        }
+        if (this.currentFloor >= 160) {
+            types.push('SHADE', 'FUNGOID', 'SENTINEL', 'SLIME_KING', 'BEETLE', 'WRECKER', 'ORACLE', 'GOLIATH', 'ASSASSIN', 'PLAGUE');
+            types.push('PHANTOM', 'BRUTE', 'SIREN', 'COLOSSUS', 'REVENANT', 'GOLEM_FIRE', 'GOLEM_ICE');
+        }
+        if (this.currentFloor >= 170) {
+            types.push('VAMPIRE_LORD', 'NECROMANCER', 'SKELETON_KING', 'DRAGON', 'ARCHDEMON', 'VOID_WALKER');
+            types.push('DRAGON', 'DRAGON', 'ARCHDEMON', 'ARCHDEMON'); // Extra weight for bosses
+        }
+        if (this.currentFloor >= 175) {
+            types.push('COSMIC_HORROR', 'COSMIC_HORROR', 'WORLD_EATER', 'WORLD_EATER', 'WORLD_EATER');
         }
 
         return types;
@@ -905,9 +995,6 @@ class Elevator {
             );
             this.floorEvent.delay = newInterval;
         }
-
-        // Visual feedback
-        this.scene.cameras.main.flash(100, 255, 100, 0);
 
         // Show speed up text
         const text = this.scene.add.text(
@@ -1074,56 +1161,7 @@ class Elevator {
             });
         }
 
-        // Update left wall decorations (rails, rivets, panels)
-        if (this.leftDecorations) {
-            this.leftDecorations.forEach(dec => {
-                if (dec && dec.active) {
-                    const offset = dec.offsetFromWall || 5;
-                    this.scene.tweens.add({
-                        targets: dec,
-                        x: newLeftX + offset,
-                        duration: 500,
-                        ease: 'Power2'
-                    });
-                }
-            });
-        }
-
-        // Update right wall decorations
-        if (this.rightDecorations) {
-            this.rightDecorations.forEach(dec => {
-                if (dec && dec.active) {
-                    const offset = dec.offsetFromWall || 5;
-                    this.scene.tweens.add({
-                        targets: dec,
-                        x: newRightX - offset,
-                        duration: 500,
-                        ease: 'Power2'
-                    });
-                }
-            });
-        }
-
-        // Update secondary ceiling lights
-        if (this.ceilingLight2) {
-            this.scene.tweens.add({
-                targets: this.ceilingLight2,
-                x: GAME_WIDTH / 2 - halfWidth * 0.5,
-                duration: 500,
-                ease: 'Power2'
-            });
-        }
-        if (this.ceilingLight3) {
-            this.scene.tweens.add({
-                targets: this.ceilingLight3,
-                x: GAME_WIDTH / 2 + halfWidth * 0.5,
-                duration: 500,
-                ease: 'Power2'
-            });
-        }
-
-        // Warning flash
-        this.scene.cameras.main.flash(100, 255, 50, 50);
+        // Decorations stay in place during shrinking (they're cosmetic wall details)
 
         // Show shrink warning
         const text = this.scene.add.text(
