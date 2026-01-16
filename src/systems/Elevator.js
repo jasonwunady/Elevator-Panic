@@ -947,7 +947,10 @@ class Elevator {
             types.push('BOMBER', 'BOMBER', 'SHIELD', 'CHARGER', 'GHOST', 'MIMIC', 'REFLECTOR', 'PORTAL', 'SHIELDER', 'PHASER', 'BLOB');
         }
         if (this.currentFloor >= 70) {
-            types.push('SUMMONER', 'BERSERKER', 'TANK', 'VAMPIRE', 'LASER', 'CLONER', 'BLOB', 'SHIELDER');
+            types.push('SUMMONER', 'BERSERKER', 'VAMPIRE', 'LASER', 'CLONER', 'BLOB', 'SHIELDER');
+        }
+        if (this.currentFloor >= 75) {
+            types.push('TANK', 'TANK'); // TANK unlocks at floor 75
         }
         if (this.currentFloor >= 80) {
             types.push('TANK', 'TANK', 'SUMMONER', 'BERSERKER', 'BERSERKER', 'CLONER', 'BLOB', 'PORTAL', 'GRAVITY');
