@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>ELEVATOR PANIC</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0a0a0a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            font-family: 'Press Start 2P', monospace;
+        }
+
+        #game-container {
+            position: relative;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
+
+        canvas {
+            display: block;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
+
+        #loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #ffcc00;
+            font-size: 16px;
+            text-align: center;
+            z-index: 100;
+        }
+
+        #loading.hidden {
+            display: none;
+        }
+
+        .loading-bar {
+            width: 200px;
+            height: 20px;
+            border: 3px solid #ffcc00;
+            margin-top: 20px;
+            background: #1a1a1a;
+        }
+
+        .loading-fill {
+            height: 100%;
+            width: 0%;
+            background: #ffcc00;
+            transition: width 0.3s;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <div id="loading">
+            <div>LOADING...</div>
+            <div class="loading-bar">
+                <div class="loading-fill" id="loading-fill"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.70.0/dist/phaser.min.js"></script>
+    <script src="src/utils/Constants.js?v=13"></script>
+    <script src="src/utils/SoundManager.js?v=2"></script>
+    <script src="src/entities/Player.js?v=8"></script>
+    <script src="src/entities/Enemy.js?v=15"></script>
+    <script src="src/entities/Powerup.js?v=3"></script>
+    <script src="src/systems/Elevator.js?v=16"></script>
+    <script src="src/systems/ScoreManager.js?v=2"></script>
+    <script src="src/scenes/BootScene.js?v=10"></script>
+    <script src="src/scenes/MenuScene.js?v=14"></script>
+    <script src="src/scenes/GameScene.js?v=8"></script>
+    <script src="src/scenes/GameOverScene.js?v=7"></script>
+    <script src="src/main.js?v=5"></script>
+</body>
+</html>
