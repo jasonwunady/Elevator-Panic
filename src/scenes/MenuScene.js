@@ -1093,35 +1093,35 @@ class MenuScene extends Phaser.Scene {
 
         // Overall progress
         const progressText = this.add.text(GAME_WIDTH / 2, 48, `Total: ${unlockedCount}/${totalAchievements}`, {
-            fontSize: '7px',
+            fontSize: '10px',
             fontFamily: 'monospace',
-            color: '#888888'
+            color: '#aaaaaa'
         }).setOrigin(0.5);
         this.achievementContainer.add(progressText);
         this.achievementItems.push(progressText);
 
         // Rank tabs
-        const tabY = 62;
-        const tabWidth = 85;
-        const tabStartX = 45;
+        const tabY = 64;
+        const tabWidth = 90;
+        const tabStartX = 50;
         ranks.forEach((rank, idx) => {
             const isSelected = idx === (this.achievementRankTab || 0);
             const counts = [bronzeCount, silverCount, goldCount, platinumCount];
             const totals = [bronzeTotal, silverTotal, goldTotal, platinumTotal];
 
             const tabBg = this.add.rectangle(
-                tabStartX + idx * tabWidth, tabY, tabWidth - 4, 16,
+                tabStartX + idx * tabWidth, tabY, tabWidth - 6, 18,
                 isSelected ? rankBgColors[rank] : 0x222222, 0.9
             );
-            tabBg.setStrokeStyle(1, isSelected ? Phaser.Display.Color.HexStringToColor(rankColors[rank]).color : 0x333333);
+            tabBg.setStrokeStyle(2, isSelected ? Phaser.Display.Color.HexStringToColor(rankColors[rank]).color : 0x444444);
             this.achievementContainer.add(tabBg);
             this.achievementItems.push(tabBg);
 
             const tabText = this.add.text(tabStartX + idx * tabWidth, tabY,
-                `${rank.charAt(0)}${rank.slice(1).toLowerCase()} ${counts[idx]}/${totals[idx]}`, {
-                fontSize: '6px',
+                `${rank.substring(0, 4)} ${counts[idx]}/${totals[idx]}`, {
+                fontSize: '9px',
                 fontFamily: 'monospace',
-                color: isSelected ? rankColors[rank] : '#666666'
+                color: isSelected ? rankColors[rank] : '#777777'
             }).setOrigin(0.5);
             this.achievementContainer.add(tabText);
             this.achievementItems.push(tabText);
@@ -1129,10 +1129,10 @@ class MenuScene extends Phaser.Scene {
 
         // Page indicator
         if (totalPages > 1) {
-            const pageText = this.add.text(GAME_WIDTH / 2, 78, `Page ${this.achievementPage + 1}/${totalPages}`, {
-                fontSize: '7px',
+            const pageText = this.add.text(GAME_WIDTH / 2, 82, `Page ${this.achievementPage + 1}/${totalPages}`, {
+                fontSize: '9px',
                 fontFamily: 'monospace',
-                color: '#666666'
+                color: '#888888'
             }).setOrigin(0.5);
             this.achievementContainer.add(pageText);
             this.achievementItems.push(pageText);
@@ -1174,7 +1174,7 @@ class MenuScene extends Phaser.Scene {
 
             // Rank badge
             const rankBadge = this.add.text(50, yPos + 5, ACHIEVEMENT_RANKS[achievement.rank].icon, {
-                fontSize: '10px',
+                fontSize: '12px',
                 fontFamily: 'monospace'
             }).setOrigin(0.5);
             this.achievementContainer.add(rankBadge);
@@ -1182,7 +1182,7 @@ class MenuScene extends Phaser.Scene {
 
             // Icon
             const icon = this.add.text(50, yPos + 25, isUnlocked ? achievement.icon : '🔒', {
-                fontSize: '14px',
+                fontSize: '16px',
                 fontFamily: 'monospace'
             }).setOrigin(0.5);
             this.achievementContainer.add(icon);
@@ -1190,8 +1190,8 @@ class MenuScene extends Phaser.Scene {
 
             // Name with rank color
             const nameColor = isUnlocked ? rankColor : '#555555';
-            const name = this.add.text(72, yPos + 8, achievement.name, {
-                fontSize: '9px',
+            const name = this.add.text(72, yPos + 6, achievement.name, {
+                fontSize: '11px',
                 fontFamily: 'monospace',
                 color: nameColor
             }).setOrigin(0, 0.5);
@@ -1200,7 +1200,7 @@ class MenuScene extends Phaser.Scene {
 
             // Description
             const desc = this.add.text(72, yPos + 22, achievement.description, {
-                fontSize: '6px',
+                fontSize: '8px',
                 fontFamily: 'monospace',
                 color: isUnlocked ? '#aaaaaa' : '#444444'
             }).setOrigin(0, 0.5);
@@ -1209,8 +1209,8 @@ class MenuScene extends Phaser.Scene {
 
             // Reward
             const rewardColor = isUnlocked ? '#ffcc00' : '#444444';
-            const reward = this.add.text(GAME_WIDTH - 50, yPos + 12, `+${achievement.reward}`, {
-                fontSize: '8px',
+            const reward = this.add.text(GAME_WIDTH - 50, yPos + 10, `+${achievement.reward}`, {
+                fontSize: '10px',
                 fontFamily: 'monospace',
                 color: rewardColor
             }).setOrigin(0.5);
@@ -1221,7 +1221,7 @@ class MenuScene extends Phaser.Scene {
             const statusText = isUnlocked ? '✓' : '○';
             const statusColor = isUnlocked ? rankColor : '#333333';
             const status = this.add.text(GAME_WIDTH - 50, yPos + 28, statusText, {
-                fontSize: '12px',
+                fontSize: '14px',
                 fontFamily: 'monospace',
                 color: statusColor
             }).setOrigin(0.5);
