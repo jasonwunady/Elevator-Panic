@@ -2350,31 +2350,43 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
     }
 
     createSlimePuddle(player) {
-        const puddle = this.scene.add.ellipse(this.x, this.y + 10, 20, 6, 0x44cc66, 0.6);
+        if (!this.scene) return;
+
+        const scene = this.scene; // Store reference
+        const puddle = scene.add.ellipse(this.x, this.y + 10, 20, 6, 0x44cc66, 0.6);
         puddle.setDepth(5);
 
         // Puddle slows player
         let puddleLife = 3000;
-        const puddleTimer = this.scene.time.addEvent({
+        const puddleTimer = scene.time.addEvent({
             delay: 16,
             callback: () => {
                 puddleLife -= 16;
-                if (!puddle.active) { puddleTimer.destroy(); return; }
+                if (!puddle.active || !scene || !scene.tweens) {
+                    puddleTimer.destroy();
+                    return;
+                }
 
                 // Check if player is on puddle
-                const dist = Phaser.Math.Distance.Between(puddle.x, puddle.y, player.x, player.y + 10);
-                if (dist < 15 && player.body) {
-                    player.body.velocity.x *= 0.85;
+                if (player && player.active && player.body) {
+                    const dist = Phaser.Math.Distance.Between(puddle.x, puddle.y, player.x, player.y + 10);
+                    if (dist < 15) {
+                        player.body.velocity.x *= 0.85;
+                    }
                 }
 
                 if (puddleLife <= 0) {
                     puddleTimer.destroy();
-                    this.scene.tweens.add({
-                        targets: puddle,
-                        alpha: 0, scaleX: 0.5,
-                        duration: 300,
-                        onComplete: () => { if (puddle.active) puddle.destroy(); }
-                    });
+                    if (scene && scene.tweens) {
+                        scene.tweens.add({
+                            targets: puddle,
+                            alpha: 0, scaleX: 0.5,
+                            duration: 300,
+                            onComplete: () => { if (puddle.active) puddle.destroy(); }
+                        });
+                    } else if (puddle.active) {
+                        puddle.destroy();
+                    }
                 }
             },
             loop: true
