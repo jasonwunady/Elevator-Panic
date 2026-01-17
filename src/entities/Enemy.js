@@ -1501,15 +1501,17 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
     dropBomb() {
         if (!this.scene || !this.active) return;
 
+        const scene = this.scene; // Store reference
+
         // Create bomb
-        const bomb = this.scene.add.circle(this.x, this.y + 10, 6, 0x333333);
-        this.scene.physics.add.existing(bomb);
+        const bomb = scene.add.circle(this.x, this.y + 10, 6, 0x333333);
+        scene.physics.add.existing(bomb);
         bomb.body.setBounce(0.3);
         bomb.body.setGravityY(300);
 
         // Bomb blinks faster as fuse runs out
         let blinkRate = 500;
-        const blinkEvent = this.scene.time.addEvent({
+        const blinkEvent = scene.time.addEvent({
             delay: blinkRate,
             callback: () => {
                 if (bomb.active) {
@@ -1522,23 +1524,28 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         });
 
         // Explode after fuse time
-        this.scene.time.delayedCall(this.config.BOMB_FUSE, () => {
+        scene.time.delayedCall(this.config.BOMB_FUSE, () => {
             if (!bomb.active) return;
             blinkEvent.destroy();
 
+            if (!scene || !scene.add) {
+                if (bomb.active) bomb.destroy();
+                return;
+            }
+
             // Explosion effect
             const explosionRadius = 60;
-            const explosion = this.scene.add.circle(bomb.x, bomb.y, explosionRadius, 0xff4400, 0.5);
-            this.scene.tweens.add({
+            const explosion = scene.add.circle(bomb.x, bomb.y, explosionRadius, 0xff4400, 0.5);
+            scene.tweens.add({
                 targets: explosion,
                 alpha: 0,
                 scale: 1.5,
                 duration: 200,
-                onComplete: () => explosion.destroy()
+                onComplete: () => { if (explosion.active) explosion.destroy(); }
             });
 
             // Damage player
-            const player = this.scene.player;
+            const player = scene.player;
             if (player && player.active) {
                 const dist = Phaser.Math.Distance.Between(bomb.x, bomb.y, player.x, player.y);
                 if (dist < explosionRadius) {
