@@ -99,15 +99,29 @@ class MenuScene extends Phaser.Scene {
             { id: 'TOXIC', name: 'TOXIC LABS', floorStart: 70, cost: 30000 },
             { id: 'CYBER', name: 'CYBER CORE', floorStart: 80, cost: 35000 },
             { id: 'ABYSS', name: 'THE ABYSS', floorStart: 90, cost: 40000 },
-            { id: 'PARADISE', name: 'PARADISE', floorStart: 100, cost: 50000 }
+            { id: 'PARADISE', name: 'PARADISE', floorStart: 100, cost: 50000 },
+            { id: 'CRYSTAL', name: 'CRYSTAL CAVERNS', floorStart: 110, cost: 60000 },
+            { id: 'HELL', name: 'HELLSCAPE', floorStart: 120, cost: 70000 },
+            { id: 'ARCTIC', name: 'ARCTIC DEPTHS', floorStart: 130, cost: 80000 },
+            { id: 'JUNGLE', name: 'OVERGROWN', floorStart: 140, cost: 90000 },
+            { id: 'STORM', name: 'STORM ZONE', floorStart: 150, cost: 100000 },
+            { id: 'BLOOD', name: 'CRIMSON TOWER', floorStart: 160, cost: 120000 },
+            { id: 'SHADOW', name: 'SHADOW REALM', floorStart: 170, cost: 140000 },
+            { id: 'MACHINE', name: 'MACHINE HEART', floorStart: 180, cost: 160000 },
+            { id: 'COSMOS', name: 'DEEP SPACE', floorStart: 190, cost: 180000 },
+            { id: 'OMEGA', name: 'OMEGA FLOOR', floorStart: 200, cost: 250000 }
         ];
 
-        // Buildings (bundles of areas) - 10x prices
+        // Buildings (bundles of areas)
         this.buildings = [
             { id: 'STARTER', name: 'STARTER TOWER', areas: ['LOBBY', 'OFFICE', 'INDUSTRIAL'], cost: 0, owned: true, description: 'The basics' },
             { id: 'DOWNTOWN', name: 'DOWNTOWN', areas: ['NEON', 'VOID', 'INFERNO'], cost: 20000, description: 'Urban warfare' },
             { id: 'HIGHRISE', name: 'HIGHRISE', areas: ['SKYLINE', 'TOXIC', 'CYBER'], cost: 50000, description: 'Sky-high chaos' },
-            { id: 'ULTIMATE', name: 'ULTIMATE', areas: ['ABYSS', 'PARADISE'], cost: 100000, description: 'Final frontier' }
+            { id: 'ULTIMATE', name: 'ULTIMATE', areas: ['ABYSS', 'PARADISE'], cost: 100000, description: 'Final frontier' },
+            { id: 'DEPTHS', name: 'THE DEPTHS', areas: ['CRYSTAL', 'HELL', 'ARCTIC'], cost: 150000, description: 'Into the deep' },
+            { id: 'WILDS', name: 'WILD ZONES', areas: ['JUNGLE', 'STORM', 'BLOOD'], cost: 200000, description: 'Nature unleashed' },
+            { id: 'BEYOND', name: 'BEYOND', areas: ['SHADOW', 'MACHINE', 'COSMOS'], cost: 300000, description: 'Past the edge' },
+            { id: 'APEX', name: 'APEX TOWER', areas: ['OMEGA'], cost: 500000, description: 'The final test' }
         ];
 
         // Initialize building ownership

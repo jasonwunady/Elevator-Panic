@@ -2031,6 +2031,106 @@ const BACKGROUND_THEMES = {
         particleColor: 0xffaaff,
         lineColor: 0x3a2a3a,
         ambientParticles: 'glow'
+    },
+    CRYSTAL: {
+        name: 'Crystal Caverns',
+        floorStart: 110,
+        bgColor: 0x0a1a2a,
+        wallColor: 0x2a4a6a,
+        accentColor: 0x88ddff,
+        particleColor: 0xaaeeff,
+        lineColor: 0x1a3a5a,
+        ambientParticles: 'glow'
+    },
+    HELL: {
+        name: 'Hellscape',
+        floorStart: 120,
+        bgColor: 0x2a0a0a,
+        wallColor: 0x6a1a1a,
+        accentColor: 0xff2200,
+        particleColor: 0xff4422,
+        lineColor: 0x4a0a0a,
+        ambientParticles: 'embers'
+    },
+    ARCTIC: {
+        name: 'Arctic Depths',
+        floorStart: 130,
+        bgColor: 0x1a2a3a,
+        wallColor: 0x4a6a8a,
+        accentColor: 0xaaffff,
+        particleColor: 0xccffff,
+        lineColor: 0x2a4a6a,
+        ambientParticles: 'dust'
+    },
+    JUNGLE: {
+        name: 'Overgrown',
+        floorStart: 140,
+        bgColor: 0x0a2a0a,
+        wallColor: 0x2a5a2a,
+        accentColor: 0x44dd44,
+        particleColor: 0x66ff66,
+        lineColor: 0x1a4a1a,
+        ambientParticles: 'dust'
+    },
+    STORM: {
+        name: 'Storm Zone',
+        floorStart: 150,
+        bgColor: 0x1a1a2a,
+        wallColor: 0x3a3a5a,
+        accentColor: 0xffff44,
+        particleColor: 0xffffaa,
+        lineColor: 0x2a2a4a,
+        ambientParticles: 'sparks'
+    },
+    BLOOD: {
+        name: 'Crimson Tower',
+        floorStart: 160,
+        bgColor: 0x2a0a1a,
+        wallColor: 0x5a1a2a,
+        accentColor: 0xff4466,
+        particleColor: 0xff6688,
+        lineColor: 0x3a0a1a,
+        ambientParticles: 'glow'
+    },
+    SHADOW: {
+        name: 'Shadow Realm',
+        floorStart: 170,
+        bgColor: 0x050508,
+        wallColor: 0x151520,
+        accentColor: 0x6644aa,
+        particleColor: 0x8866cc,
+        lineColor: 0x0a0a10,
+        ambientParticles: 'stars'
+    },
+    MACHINE: {
+        name: 'Machine Heart',
+        floorStart: 180,
+        bgColor: 0x1a1a1a,
+        wallColor: 0x4a4a4a,
+        accentColor: 0xff8800,
+        particleColor: 0xffaa44,
+        lineColor: 0x2a2a2a,
+        ambientParticles: 'sparks'
+    },
+    COSMOS: {
+        name: 'Deep Space',
+        floorStart: 190,
+        bgColor: 0x000010,
+        wallColor: 0x101030,
+        accentColor: 0xaa88ff,
+        particleColor: 0xccaaff,
+        lineColor: 0x080820,
+        ambientParticles: 'stars'
+    },
+    OMEGA: {
+        name: 'Omega Floor',
+        floorStart: 200,
+        bgColor: 0x0a0a0a,
+        wallColor: 0x2a2a2a,
+        accentColor: 0xffffff,
+        particleColor: 0xffffff,
+        lineColor: 0x1a1a1a,
+        ambientParticles: 'glow'
     }
 };
 
