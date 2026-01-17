@@ -396,6 +396,7 @@ class MenuScene extends Phaser.Scene {
             { text: '▶ START GAME', action: 'start' },
             { text: '👾 MONSTERS', action: 'monsters' },
             { text: '🏆 ACHIEVEMENTS', action: 'achievements' },
+            { text: '🏢 BUILDINGS', action: 'buildings' },
             { text: '🎨 SKINS', action: 'skins' },
             { text: '✨ PARTICLES', action: 'particles' },
             { text: '🗑 DELETE SAVE', action: 'delete' }
@@ -1391,6 +1392,9 @@ class MenuScene extends Phaser.Scene {
                     break;
                 case 'achievements':
                     this.showAchievements();
+                    break;
+                case 'buildings':
+                    this.showShop('buildings');
                     break;
                 case 'skins':
                     this.showShop('skins');

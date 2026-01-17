@@ -3205,16 +3205,15 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
             duration: 100,
             onComplete: () => {
                 if (stinger.active) stinger.destroy();
-                // Poison effect - slow player
+                // Poison effect - slow player using speedMultiplier
                 if (player.active && !player.isPoisoned) {
                     player.isPoisoned = true;
                     player.setTint(0x88ff88);
-                    const originalSpeed = player.moveSpeed;
-                    player.moveSpeed *= 0.5;
+                    player.speedMultiplier = 0.5;
                     this.scene.time.delayedCall(3000, () => {
                         if (player.active) {
                             player.isPoisoned = false;
-                            player.moveSpeed = originalSpeed;
+                            player.speedMultiplier = 1;
                             player.clearTint();
                         }
                     });

@@ -25,6 +25,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.facingRight = true;
         this.isGrounded = false;
         this.wasGrounded = false;
+        this.speedMultiplier = 1;
+        this.isPoisoned = false;
 
         // Animation state
         this.animTime = 0;
@@ -142,7 +144,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     handleMovement() {
-        const speed = PLAYER_CONFIG.SPEED;
+        const baseSpeed = PLAYER_CONFIG.SPEED;
+        const speed = baseSpeed * (this.speedMultiplier || 1);
         const leftPressed = this.cursors.left.isDown || this.wasd.A.isDown || this.touchControls.left;
         const rightPressed = this.cursors.right.isDown || this.wasd.D.isDown || this.touchControls.right;
 
