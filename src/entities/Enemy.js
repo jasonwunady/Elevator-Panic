@@ -3539,8 +3539,11 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
 
     // ========== ADVANCED ENEMY BEHAVIORS (50 NEW TYPES) ==========
     advancedEnemyBehavior(player) {
+        if (!this.scene || !this.scene.time) return;
+
         const direction = player.x > this.x ? 1 : -1;
         this.setFlipX(direction < 0);
+        const timeNow = this.scene.time.now || 0;
 
         switch (this.enemyType) {
             case 'VIPER':
@@ -3549,7 +3552,9 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
                 if (distToPlayer < 50 && this.strikeReady) {
                     this.setVelocityX(direction * this.config.SPEED * 3);
                     this.strikeReady = false;
-                    this.scene.time.delayedCall(1000, () => { this.strikeReady = true; });
+                    if (this.scene && this.scene.time) {
+                        this.scene.time.delayedCall(1000, () => { this.strikeReady = true; });
+                    }
                 } else {
                     this.setVelocityX(direction * this.config.SPEED * 0.5);
                 }
@@ -3568,7 +3573,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
             case 'WASP':
                 // Flying stinger
                 this.setVelocityX(direction * this.config.SPEED);
-                const floatY = Math.sin(this.scene.time.now * 0.005) * 60;
+                const floatY = Math.sin(timeNow * 0.005) * 60;
                 if (this.body && !this.body.blocked.up && !this.body.blocked.down) {
                     this.setVelocityY(floatY);
                 }
@@ -3582,13 +3587,13 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
             case 'DJINN':
                 // Floats and moves unpredictably
                 this.setVelocityX(direction * this.config.SPEED);
-                const djinnFloat = Math.sin(this.scene.time.now * 0.004) * 40;
+                const djinnFloat = Math.sin(timeNow * 0.004) * 40;
                 if (this.body) this.setVelocityY(djinnFloat);
                 break;
 
             case 'GARGOYLE':
                 // Flies and divebombs
-                const gargoyleFloat = Math.sin(this.scene.time.now * 0.003) * 30;
+                const gargoyleFloat = Math.sin(timeNow * 0.003) * 30;
                 this.setVelocityX(direction * this.config.SPEED);
                 if (this.body && !this.body.blocked.down) {
                     this.setVelocityY(gargoyleFloat);
@@ -3603,13 +3608,13 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
             case 'BANSHEE':
                 // Floats eerily
                 this.setVelocityX(direction * this.config.SPEED);
-                this.setAlpha(0.5 + Math.sin(this.scene.time.now * 0.005) * 0.3);
+                this.setAlpha(0.5 + Math.sin(timeNow * 0.005) * 0.3);
                 break;
 
             case 'PHOENIX':
                 // Flies with fire trail
                 this.setVelocityX(direction * this.config.SPEED);
-                const phoenixFloat = Math.sin(this.scene.time.now * 0.004) * 35;
+                const phoenixFloat = Math.sin(timeNow * 0.004) * 35;
                 if (this.body) this.setVelocityY(phoenixFloat);
                 break;
 
@@ -3631,7 +3636,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
             case 'WYVERN':
                 // Flying beast
                 this.setVelocityX(direction * this.config.SPEED);
-                const wyvernFloat = Math.sin(this.scene.time.now * 0.003) * 40;
+                const wyvernFloat = Math.sin(timeNow * 0.003) * 40;
                 if (this.body) this.setVelocityY(wyvernFloat);
                 break;
 
@@ -3639,7 +3644,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
                 // Charges like CHARGER
                 if (!this.isCharging) {
                     this.chargeCooldown -= 16;
-                    if (this.chargeCooldown <= 0) {
+                    if (this.chargeCooldown <= 0 && this.scene && this.scene.time) {
                         this.isCharging = true;
                         this.chargeDirection = direction;
                         this.scene.time.delayedCall(1500, () => {
@@ -3843,7 +3848,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
             case 'DRAGON':
                 // Flying flame beast
                 this.setVelocityX(direction * this.config.SPEED);
-                const dragonFloat = Math.sin(this.scene.time.now * 0.002) * 30;
+                const dragonFloat = Math.sin(timeNow * 0.002) * 30;
                 if (this.body) this.setVelocityY(dragonFloat);
                 break;
 
@@ -3857,8 +3862,8 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
                 this.blinkCooldown -= 16;
                 if (this.blinkCooldown <= 0) {
                     this.blinkCooldown = 2000;
-                    const elevator = this.scene.elevator;
-                    if (elevator) {
+                    if (this.scene && this.scene.elevator) {
+                        const elevator = this.scene.elevator;
                         const bounds = elevator.getElevatorBounds();
                         this.x = Phaser.Math.Between(bounds.left + 20, bounds.right - 20);
                     }
