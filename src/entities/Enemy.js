@@ -2024,49 +2024,68 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
     }
 
     createGravityWell(player) {
+        if (!this.scene) return;
+
+        const scene = this.scene; // Store reference
+
         // Create a gravity well at current position
         const wellX = this.x;
         const wellY = this.y;
-        const well = this.scene.add.circle(wellX, wellY, 5, 0x6622aa, 0.8);
+        const well = scene.add.circle(wellX, wellY, 5, 0x6622aa, 0.8);
         well.setDepth(98);
 
         // Expand the well
-        this.scene.tweens.add({
+        scene.tweens.add({
             targets: well,
             scale: 8,
             duration: 500,
             onComplete: () => {
+                if (!scene || !scene.time) {
+                    if (well.active) well.destroy();
+                    return;
+                }
+
                 // Well is active for 2 seconds
                 let wellTime = 0;
-                const wellTimer = this.scene.time.addEvent({
+                const wellTimer = scene.time.addEvent({
                     delay: 16,
                     callback: () => {
                         wellTime += 16;
-                        if (!well.active) { wellTimer.destroy(); return; }
+                        if (!well.active || !scene || !scene.tweens) {
+                            wellTimer.destroy();
+                            return;
+                        }
 
                         // Pull player towards well
-                        const dist = Phaser.Math.Distance.Between(wellX, wellY, player.x, player.y);
-                        if (dist < 70 && dist > 5 && player.body) {
-                            const pullX = (wellX - player.x) / dist * 8;
-                            const pullY = (wellY - player.y) / dist * 6;
-                            player.body.velocity.x += pullX;
-                            player.body.velocity.y += pullY;
-                        }
-                        // Damage if too close
-                        if (dist < 20 && !player.isInvincible) {
-                            player.takeDamage('GRAVITY');
-                            wellTimer.destroy();
-                            well.destroy();
+                        if (player && player.active && player.body) {
+                            const dist = Phaser.Math.Distance.Between(wellX, wellY, player.x, player.y);
+                            if (dist < 70 && dist > 5) {
+                                const pullX = (wellX - player.x) / dist * 8;
+                                const pullY = (wellY - player.y) / dist * 6;
+                                player.body.velocity.x += pullX;
+                                player.body.velocity.y += pullY;
+                            }
+                            // Damage if too close
+                            if (dist < 20 && !player.isInvincible) {
+                                player.takeDamage('GRAVITY');
+                                wellTimer.destroy();
+                                if (well.active) well.destroy();
+                                return;
+                            }
                         }
 
                         if (wellTime > 2000) {
                             wellTimer.destroy();
-                            this.scene.tweens.add({
-                                targets: well,
-                                scale: 0, alpha: 0,
-                                duration: 300,
-                                onComplete: () => { if (well.active) well.destroy(); }
-                            });
+                            if (scene && scene.tweens) {
+                                scene.tweens.add({
+                                    targets: well,
+                                    scale: 0, alpha: 0,
+                                    duration: 300,
+                                    onComplete: () => { if (well.active) well.destroy(); }
+                                });
+                            } else if (well.active) {
+                                well.destroy();
+                            }
                         }
                     },
                     loop: true
@@ -2426,9 +2445,11 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
     fireHomingMissile(player) {
         if (!this.scene || !this.active) return;
 
+        const scene = this.scene; // Store reference
+
         // Launch warning
-        const warning = this.scene.add.circle(this.x, this.y - 10, 4, 0xff0000, 0.8);
-        this.scene.tweens.add({
+        const warning = scene.add.circle(this.x, this.y - 10, 4, 0xff0000, 0.8);
+        scene.tweens.add({
             targets: warning,
             scale: 2, alpha: 0,
             duration: 200,
@@ -2436,16 +2457,16 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         });
 
         // Create missile sprite
-        const missile = this.scene.add.sprite(this.x, this.y - 5, 'homing_missile');
+        const missile = scene.add.sprite(this.x, this.y - 5, 'homing_missile');
         missile.setDepth(99);
         missile.setScale(1.5);
 
         // Missile exhaust trail
         let trackTime = 0;
-        const trackInterval = this.scene.time.addEvent({
+        const trackInterval = scene.time.addEvent({
             delay: 16,
             callback: () => {
-                if (!missile.active || !player.active || !this.scene) {
+                if (!missile.active || !player.active || !scene || !scene.add) {
                     trackInterval.destroy();
                     if (missile.active) missile.destroy();
                     return;
@@ -2459,8 +2480,8 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
 
                 // Exhaust trail
                 if (trackTime % 50 < 20) {
-                    const exhaust = this.scene.add.circle(missile.x - Math.cos(angle) * 5, missile.y - Math.sin(angle) * 5, 2, 0xff6600, 0.7);
-                    this.scene.tweens.add({
+                    const exhaust = scene.add.circle(missile.x - Math.cos(angle) * 5, missile.y - Math.sin(angle) * 5, 2, 0xff6600, 0.7);
+                    scene.tweens.add({
                         targets: exhaust,
                         alpha: 0, scale: 0.5,
                         duration: 150,
@@ -2473,9 +2494,9 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
                 if (dist < 18 && !player.isInvincible) {
                     // Explosion!
                     for (let i = 0; i < 8; i++) {
-                        const exp = this.scene.add.circle(missile.x, missile.y, 3, 0xff4400, 0.9);
+                        const exp = scene.add.circle(missile.x, missile.y, 3, 0xff4400, 0.9);
                         const expAngle = (i / 8) * Math.PI * 2;
-                        this.scene.tweens.add({
+                        scene.tweens.add({
                             targets: exp,
                             x: missile.x + Math.cos(expAngle) * 25,
                             y: missile.y + Math.sin(expAngle) * 25,
@@ -2494,7 +2515,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
                 if (trackTime > 2500) {
                     trackInterval.destroy();
                     // Fizzle out
-                    this.scene.tweens.add({
+                    scene.tweens.add({
                         targets: missile,
                         alpha: 0, rotation: missile.rotation + 2,
                         duration: 200,
