@@ -403,9 +403,9 @@ class MenuScene extends Phaser.Scene {
         ];
 
         buttons.forEach((btn, i) => {
-            const y = 165 + i * 18;
+            const y = 160 + i * 15;
             const button = this.add.text(GAME_WIDTH / 2, y, btn.text, {
-                fontSize: '10px',
+                fontSize: '9px',
                 fontFamily: 'monospace',
                 color: i === 0 ? '#ffffff' : '#888888'
             }).setOrigin(0.5);
@@ -416,7 +416,7 @@ class MenuScene extends Phaser.Scene {
         });
 
         // Selection indicator
-        this.selector = this.add.text(GAME_WIDTH / 2 - 65, 165, '►', {
+        this.selector = this.add.text(GAME_WIDTH / 2 - 60, 160, '►', {
             fontSize: '10px',
             fontFamily: 'monospace',
             color: '#ffff00'
