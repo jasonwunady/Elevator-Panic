@@ -3193,8 +3193,13 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
     // ========== 10 NEW ENEMY BEHAVIOR METHODS ==========
 
     wraithBehavior(player) {
+        if (!this.scene || !this.scene.time) return;
+
         const direction = player.x > this.x ? 1 : -1;
         this.setFlipX(direction < 0);
+
+        // Keep rotation at 0 (no spinning)
+        this.rotation = 0;
 
         // Update fade timer
         this.fadeTimer -= 16;
@@ -3219,7 +3224,8 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         }
 
         // Eerie floating motion
-        const floatY = Math.sin(this.scene.time.now * 0.002) * 30;
+        const timeNow = this.scene.time.now || 0;
+        const floatY = Math.sin(timeNow * 0.002) * 30;
         if (this.body && !this.body.blocked.up && !this.body.blocked.down) {
             this.setVelocityY(floatY);
         }
