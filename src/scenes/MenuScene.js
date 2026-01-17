@@ -1062,7 +1062,11 @@ class MenuScene extends Phaser.Scene {
     updateAchievementDisplay() {
         // Clear old achievement items
         if (this.achievementItems) {
-            this.achievementItems.forEach(item => item.destroy());
+            this.achievementItems.forEach(item => {
+                if (item && item.active) {
+                    item.destroy();
+                }
+            });
         }
         this.achievementItems = [];
 
@@ -1362,6 +1366,8 @@ class MenuScene extends Phaser.Scene {
                 items = this.skins;
             } else if (this.currentMenu === 'particles') {
                 items = this.particles;
+            } else if (this.currentMenu === 'buildings') {
+                items = this.buildings;
             } else {
                 items = this.areas;
             }
