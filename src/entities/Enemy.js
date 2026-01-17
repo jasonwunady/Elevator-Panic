@@ -1841,17 +1841,23 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
     }
 
     chargeLaser(player) {
+        if (!this.scene) return;
+
         this.isCharging = true;
+        const scene = this.scene; // Store reference
 
         // Charge warning
-        this.scene.time.delayedCall(500, () => {
-            if (!this.active || !this.scene) return;
+        scene.time.delayedCall(500, () => {
+            if (!this.active || !scene || !scene.add) {
+                this.isCharging = false;
+                return;
+            }
 
             // Fire laser
             const angle = Phaser.Math.Angle.Between(this.x, this.y, player.x, player.y);
             const laserLength = 200;
 
-            const laser = this.scene.add.rectangle(
+            const laser = scene.add.rectangle(
                 this.x + Math.cos(angle) * laserLength / 2,
                 this.y + Math.sin(angle) * laserLength / 2,
                 laserLength, 4, 0xff0000, 0.8
@@ -1860,17 +1866,18 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
             laser.setDepth(100);
 
             // Check if player is hit
-            const playerDist = Phaser.Math.Distance.Between(this.x, this.y, player.x, player.y);
-            if (playerDist < laserLength && !player.isInvincible) {
-                // Check angle tolerance
-                const angleToPlayer = Phaser.Math.Angle.Between(this.x, this.y, player.x, player.y);
-                if (Math.abs(angle - angleToPlayer) < 0.3) {
-                    player.takeDamage('LASER');
+            if (player && player.active) {
+                const playerDist = Phaser.Math.Distance.Between(this.x, this.y, player.x, player.y);
+                if (playerDist < laserLength && !player.isInvincible) {
+                    const angleToPlayer = Phaser.Math.Angle.Between(this.x, this.y, player.x, player.y);
+                    if (Math.abs(angle - angleToPlayer) < 0.3) {
+                        player.takeDamage('LASER');
+                    }
                 }
             }
 
             // Fade laser
-            this.scene.tweens.add({
+            scene.tweens.add({
                 targets: laser,
                 alpha: 0,
                 duration: 200,
@@ -3233,13 +3240,15 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
     }
 
     stingAttack(player) {
-        if (!player || !player.active || player.isInvincible) return;
+        if (!player || !player.active || player.isInvincible || !this.scene) return;
+
+        const scene = this.scene; // Store reference
 
         // Visual sting effect
-        const stinger = this.scene.add.circle(this.x, this.y - 10, 4, 0xff4400);
+        const stinger = scene.add.circle(this.x, this.y - 10, 4, 0xff4400);
         const targetX = player.x;
         const targetY = player.y;
-        this.scene.tweens.add({
+        scene.tweens.add({
             targets: stinger,
             x: targetX, y: targetY,
             duration: 100,
@@ -3250,13 +3259,15 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
                     player.isPoisoned = true;
                     player.setTint(0x88ff88);
                     player.speedMultiplier = 0.5;
-                    this.scene.time.delayedCall(3000, () => {
-                        if (player.active) {
-                            player.isPoisoned = false;
-                            player.speedMultiplier = 1;
-                            player.clearTint();
-                        }
-                    });
+                    if (scene && scene.time) {
+                        scene.time.delayedCall(3000, () => {
+                            if (player.active) {
+                                player.isPoisoned = false;
+                                player.speedMultiplier = 1;
+                                player.clearTint();
+                            }
+                        });
+                    }
                 }
             }
         });
@@ -3382,16 +3393,20 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
     }
 
     hydraBite(player) {
+        if (!this.scene) return;
+
+        const scene = this.scene; // Store reference
+
         // Three snap attacks from each head
         for (let i = 0; i < 3; i++) {
-            this.scene.time.delayedCall(i * 100, () => {
-                if (!this.active) return;
+            scene.time.delayedCall(i * 100, () => {
+                if (!this.active || !scene || !scene.add) return;
                 const offsetX = (i - 1) * 15;
-                const snap = this.scene.add.text(this.x + offsetX, this.y - 10, '!', {
+                const snap = scene.add.text(this.x + offsetX, this.y - 10, '!', {
                     fontSize: '16px',
                     color: '#ff0000'
                 }).setOrigin(0.5);
-                this.scene.tweens.add({
+                scene.tweens.add({
                     targets: snap,
                     y: snap.y - 15, alpha: 0,
                     duration: 200,
@@ -3460,18 +3475,22 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
     titanSlam(player) {
         if (!this.scene || !this.active) return;
 
+        const scene = this.scene; // Store reference
+
         // Warning
         this.setTint(0xffff00);
-        this.scene.time.delayedCall(300, () => {
-            if (!this.active) return;
+        scene.time.delayedCall(300, () => {
+            if (!this.active || !scene || !scene.add) return;
             this.setTint(0x884444);
 
             // Slam effect
-            this.scene.cameras.main.shake(200, 0.02);
+            if (scene.cameras && scene.cameras.main) {
+                scene.cameras.main.shake(200, 0.02);
+            }
 
             // Shockwave
-            const shockwave = this.scene.add.circle(this.x, this.y + 10, 10, 0xffaa00, 0.6);
-            this.scene.tweens.add({
+            const shockwave = scene.add.circle(this.x, this.y + 10, 10, 0xffaa00, 0.6);
+            scene.tweens.add({
                 targets: shockwave,
                 scale: 8, alpha: 0,
                 duration: 400,
@@ -3479,10 +3498,12 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
             });
 
             // Knockback player if close
-            const dist = Phaser.Math.Distance.Between(this.x, this.y, player.x, player.y);
-            if (dist < 80 && player.body) {
-                const angle = Phaser.Math.Angle.Between(this.x, this.y, player.x, player.y);
-                player.setVelocity(Math.cos(angle) * 200, -200);
+            if (player && player.active && player.body) {
+                const dist = Phaser.Math.Distance.Between(this.x, this.y, player.x, player.y);
+                if (dist < 80) {
+                    const angle = Phaser.Math.Angle.Between(this.x, this.y, player.x, player.y);
+                    player.setVelocity(Math.cos(angle) * 200, -200);
+                }
             }
         });
     }
