@@ -399,13 +399,14 @@ class MenuScene extends Phaser.Scene {
             { text: '🏢 BUILDINGS', action: 'buildings' },
             { text: '🎨 SKINS', action: 'skins' },
             { text: '✨ PARTICLES', action: 'particles' },
+            { text: '🔄 REFRESH', action: 'refresh' },
             { text: '🗑 DELETE SAVE', action: 'delete' }
         ];
 
         buttons.forEach((btn, i) => {
-            const y = 160 + i * 15;
+            const y = 155 + i * 13;
             const button = this.add.text(GAME_WIDTH / 2, y, btn.text, {
-                fontSize: '9px',
+                fontSize: '8px',
                 fontFamily: 'monospace',
                 color: i === 0 ? '#ffffff' : '#888888'
             }).setOrigin(0.5);
@@ -416,8 +417,8 @@ class MenuScene extends Phaser.Scene {
         });
 
         // Selection indicator
-        this.selector = this.add.text(GAME_WIDTH / 2 - 60, 160, '►', {
-            fontSize: '10px',
+        this.selector = this.add.text(GAME_WIDTH / 2 - 55, 155, '►', {
+            fontSize: '9px',
             fontFamily: 'monospace',
             color: '#ffff00'
         }).setOrigin(0.5);
@@ -1408,6 +1409,9 @@ class MenuScene extends Phaser.Scene {
                 case 'particles':
                     this.showShop('particles');
                     break;
+                case 'refresh':
+                    this.confirmRefresh();
+                    break;
                 case 'delete':
                     this.confirmDelete();
                     break;
@@ -1513,14 +1517,285 @@ class MenuScene extends Phaser.Scene {
         }
     }
 
-    confirmDelete() {
+    confirmRefresh() {
         // Create confirmation dialog - store elements separately for proper cleanup
-        this.deleteElements = [];
+        this.refreshElements = [];
 
         // Dark overlay
         const overlay = this.add.rectangle(GAME_WIDTH / 2, GAME_HEIGHT / 2, GAME_WIDTH, GAME_HEIGHT, 0x000000, 0.8);
         overlay.setDepth(500);
         overlay.setInteractive(); // Block clicks through overlay
+        this.refreshElements.push(overlay);
+
+        // Dialog box
+        const dialog = this.add.rectangle(GAME_WIDTH / 2, GAME_HEIGHT / 2, 200, 120, 0x222233, 0.95);
+        dialog.setStrokeStyle(2, 0x00aaff);
+        dialog.setDepth(501);
+        this.refreshElements.push(dialog);
+
+        // Warning text
+        const warning = this.add.text(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 35, '🔄 REFRESH GAME?', {
+            fontSize: '14px',
+            fontFamily: 'monospace',
+            color: '#00aaff'
+        }).setOrigin(0.5).setDepth(502);
+        this.refreshElements.push(warning);
+
+        const info = this.add.text(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 10, 'Reload the page\n(saves are kept)', {
+            fontSize: '10px',
+            fontFamily: 'monospace',
+            color: '#aaaaaa',
+            align: 'center'
+        }).setOrigin(0.5).setDepth(502);
+        this.refreshElements.push(info);
+
+        // Buttons - create with proper hit areas
+        const yesBtn = this.add.text(GAME_WIDTH / 2 - 40, GAME_HEIGHT / 2 + 30, '[ Y ]', {
+            fontSize: '12px',
+            fontFamily: 'monospace',
+            color: '#00aaff',
+            backgroundColor: '#112233',
+            padding: { x: 8, y: 4 }
+        }).setOrigin(0.5).setDepth(503).setInteractive({ useHandCursor: true });
+        this.refreshElements.push(yesBtn);
+
+        const noBtn = this.add.text(GAME_WIDTH / 2 + 40, GAME_HEIGHT / 2 + 30, '[ N ]', {
+            fontSize: '12px',
+            fontFamily: 'monospace',
+            color: '#44ff44',
+            backgroundColor: '#113311',
+            padding: { x: 8, y: 4 }
+        }).setOrigin(0.5).setDepth(503).setInteractive({ useHandCursor: true });
+        this.refreshElements.push(noBtn);
+
+        // Hover effects
+        yesBtn.on('pointerover', () => yesBtn.setColor('#44ccff'));
+        yesBtn.on('pointerout', () => yesBtn.setColor('#00aaff'));
+        noBtn.on('pointerover', () => noBtn.setColor('#66ff66'));
+        noBtn.on('pointerout', () => noBtn.setColor('#44ff44'));
+
+        yesBtn.on('pointerdown', () => {
+            this.closeRefreshDialog();
+            this.playElevatorRefreshAnimation();
+        });
+
+        noBtn.on('pointerdown', () => {
+            this.closeRefreshDialog();
+        });
+
+        // Keyboard support - Y/N keys
+        this.refreshDialogActive = true;
+
+        this.refreshYHandler = () => {
+            if (!this.refreshDialogActive) return;
+            this.closeRefreshDialog();
+            this.playElevatorRefreshAnimation();
+        };
+
+        this.refreshNHandler = () => {
+            if (!this.refreshDialogActive) return;
+            this.closeRefreshDialog();
+        };
+
+        this.refreshEscHandler = () => {
+            if (!this.refreshDialogActive) return;
+            this.closeRefreshDialog();
+        };
+
+        this.input.keyboard.on('keydown-Y', this.refreshYHandler);
+        this.input.keyboard.on('keydown-N', this.refreshNHandler);
+        this.input.keyboard.on('keydown-ESC', this.refreshEscHandler);
+    }
+
+    closeRefreshDialog() {
+        this.refreshDialogActive = false;
+
+        // Remove keyboard listeners
+        if (this.refreshYHandler) this.input.keyboard.off('keydown-Y', this.refreshYHandler);
+        if (this.refreshNHandler) this.input.keyboard.off('keydown-N', this.refreshNHandler);
+        if (this.refreshEscHandler) this.input.keyboard.off('keydown-ESC', this.refreshEscHandler);
+
+        this.refreshYHandler = null;
+        this.refreshNHandler = null;
+        this.refreshEscHandler = null;
+
+        if (this.refreshElements) {
+            this.refreshElements.forEach(el => {
+                if (el && el.active) el.destroy();
+            });
+            this.refreshElements = null;
+        }
+    }
+
+    playElevatorRefreshAnimation() {
+        // Create full screen animation overlay
+        this.animElements = [];
+
+        // Dark background
+        const bg = this.add.rectangle(GAME_WIDTH / 2, GAME_HEIGHT / 2, GAME_WIDTH, GAME_HEIGHT, 0x0a0a1a);
+        bg.setDepth(600);
+        this.animElements.push(bg);
+
+        // Elevator shaft walls
+        const leftWall = this.add.rectangle(50, GAME_HEIGHT / 2, 10, GAME_HEIGHT, 0x333344);
+        leftWall.setDepth(601);
+        this.animElements.push(leftWall);
+
+        const rightWall = this.add.rectangle(GAME_WIDTH - 50, GAME_HEIGHT / 2, 10, GAME_HEIGHT, 0x333344);
+        rightWall.setDepth(601);
+        this.animElements.push(rightWall);
+
+        // Elevator car
+        const elevator = this.add.rectangle(GAME_WIDTH / 2, GAME_HEIGHT + 50, 150, 80, 0x444466);
+        elevator.setStrokeStyle(3, 0x666688);
+        elevator.setDepth(602);
+        this.animElements.push(elevator);
+
+        // Elevator doors (closed)
+        const doorLeft = this.add.rectangle(GAME_WIDTH / 2 - 30, GAME_HEIGHT + 50, 50, 70, 0x555577);
+        doorLeft.setDepth(603);
+        this.animElements.push(doorLeft);
+
+        const doorRight = this.add.rectangle(GAME_WIDTH / 2 + 30, GAME_HEIGHT + 50, 50, 70, 0x555577);
+        doorRight.setDepth(603);
+        this.animElements.push(doorRight);
+
+        // Floor counter
+        const floorText = this.add.text(GAME_WIDTH / 2, 40, 'FLOOR 1', {
+            fontSize: '18px',
+            fontFamily: 'monospace',
+            color: '#ffcc00',
+            stroke: '#000000',
+            strokeThickness: 3
+        }).setOrigin(0.5).setDepth(604);
+        this.animElements.push(floorText);
+
+        // Moving floor lines for effect
+        const floorLines = [];
+        for (let i = 0; i < 20; i++) {
+            const line = this.add.rectangle(
+                Phaser.Math.Between(60, GAME_WIDTH - 60),
+                Phaser.Math.Between(0, GAME_HEIGHT),
+                2,
+                Phaser.Math.Between(30, 100),
+                0x222244,
+                0.6
+            );
+            line.setDepth(600);
+            line.speed = Phaser.Math.FloatBetween(8, 15);
+            floorLines.push(line);
+            this.animElements.push(line);
+        }
+
+        // Animate floor lines moving down (elevator going up)
+        const lineTimer = this.time.addEvent({
+            delay: 16,
+            callback: () => {
+                floorLines.forEach(line => {
+                    line.y += line.speed;
+                    if (line.y > GAME_HEIGHT + 50) {
+                        line.y = -50;
+                        line.x = Phaser.Math.Between(60, GAME_WIDTH - 60);
+                    }
+                });
+            },
+            loop: true
+        });
+
+        // Get max floor reached
+        const maxFloor = window.gameState.highScore > 0 ?
+            Math.max(window.gameState.lastFloor || 1, Math.floor(window.gameState.highScore / 100) || 1) :
+            1;
+
+        // Animate elevator coming up
+        this.tweens.add({
+            targets: [elevator, doorLeft, doorRight],
+            y: GAME_HEIGHT / 2,
+            duration: 1500,
+            ease: 'Power2'
+        });
+
+        // Animate floor counter
+        let currentFloor = 1;
+        const floorTimer = this.time.addEvent({
+            delay: 50,
+            callback: () => {
+                if (currentFloor < maxFloor) {
+                    currentFloor = Math.min(currentFloor + Math.ceil(maxFloor / 30), maxFloor);
+                    floorText.setText(`FLOOR ${currentFloor}`);
+                    this.soundManager.playSound('kick');
+                }
+            },
+            repeat: 30
+        });
+
+        // After elevator arrives
+        this.time.delayedCall(1800, () => {
+            // Ding sound
+            this.soundManager.playSound('ding');
+
+            // Update floor text to max
+            floorText.setText(`FLOOR ${maxFloor}`);
+
+            // Open doors
+            this.tweens.add({
+                targets: doorLeft,
+                x: GAME_WIDTH / 2 - 55,
+                duration: 500,
+                ease: 'Power2'
+            });
+            this.tweens.add({
+                targets: doorRight,
+                x: GAME_WIDTH / 2 + 55,
+                duration: 500,
+                ease: 'Power2'
+            });
+
+            // Show farewell message
+            this.time.delayedCall(600, () => {
+                const message1 = this.add.text(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 20, 'THANKS FOR PLAYING!', {
+                    fontSize: '14px',
+                    fontFamily: 'monospace',
+                    color: '#ffcc00',
+                    stroke: '#000000',
+                    strokeThickness: 3
+                }).setOrigin(0.5).setDepth(610);
+                this.animElements.push(message1);
+
+                const message2 = this.add.text(GAME_WIDTH / 2, GAME_HEIGHT / 2 + 10, 'SEE YOU SOON!', {
+                    fontSize: '12px',
+                    fontFamily: 'monospace',
+                    color: '#ffffff',
+                    stroke: '#000000',
+                    strokeThickness: 2
+                }).setOrigin(0.5).setDepth(610);
+                this.animElements.push(message2);
+
+                // Fade out and refresh
+                this.time.delayedCall(1500, () => {
+                    this.cameras.main.fadeOut(500, 0, 0, 0);
+
+                    this.time.delayedCall(600, () => {
+                        // Stop timers
+                        lineTimer.destroy();
+                        floorTimer.destroy();
+
+                        // Actual page refresh
+                        window.location.reload();
+                    });
+                });
+            });
+        });
+    }
+
+    confirmDelete() {
+        // First confirmation dialog
+        this.deleteElements = [];
+
+        // Dark overlay
+        const overlay = this.add.rectangle(GAME_WIDTH / 2, GAME_HEIGHT / 2, GAME_WIDTH, GAME_HEIGHT, 0x000000, 0.8);
+        overlay.setDepth(500);
+        overlay.setInteractive();
         this.deleteElements.push(overlay);
 
         // Dialog box
@@ -1545,8 +1820,8 @@ class MenuScene extends Phaser.Scene {
         }).setOrigin(0.5).setDepth(502);
         this.deleteElements.push(info);
 
-        // Buttons - create with proper hit areas
-        const yesBtn = this.add.text(GAME_WIDTH / 2 - 40, GAME_HEIGHT / 2 + 30, '[ YES ]', {
+        // Buttons
+        const yesBtn = this.add.text(GAME_WIDTH / 2 - 40, GAME_HEIGHT / 2 + 30, '[ Y ]', {
             fontSize: '12px',
             fontFamily: 'monospace',
             color: '#ff4444',
@@ -1555,7 +1830,7 @@ class MenuScene extends Phaser.Scene {
         }).setOrigin(0.5).setDepth(503).setInteractive({ useHandCursor: true });
         this.deleteElements.push(yesBtn);
 
-        const noBtn = this.add.text(GAME_WIDTH / 2 + 40, GAME_HEIGHT / 2 + 30, '[ NO ]', {
+        const noBtn = this.add.text(GAME_WIDTH / 2 + 40, GAME_HEIGHT / 2 + 30, '[ N ]', {
             fontSize: '12px',
             fontFamily: 'monospace',
             color: '#44ff44',
@@ -1572,20 +1847,168 @@ class MenuScene extends Phaser.Scene {
 
         yesBtn.on('pointerdown', () => {
             this.closeDeleteDialog();
-            this.deleteAllData();
+            this.confirmDeleteFinal(); // Show second confirmation
         });
 
         noBtn.on('pointerdown', () => {
             this.closeDeleteDialog();
         });
 
-        // ESC to cancel
-        this.deleteEscHandler = this.input.keyboard.once('keydown-ESC', () => {
+        // Keyboard support
+        this.deleteDialogActive = true;
+
+        this.deleteYHandler = () => {
+            if (!this.deleteDialogActive) return;
             this.closeDeleteDialog();
+            this.confirmDeleteFinal(); // Show second confirmation
+        };
+
+        this.deleteNHandler = () => {
+            if (!this.deleteDialogActive) return;
+            this.closeDeleteDialog();
+        };
+
+        this.deleteEscHandler = () => {
+            if (!this.deleteDialogActive) return;
+            this.closeDeleteDialog();
+        };
+
+        this.input.keyboard.on('keydown-Y', this.deleteYHandler);
+        this.input.keyboard.on('keydown-N', this.deleteNHandler);
+        this.input.keyboard.on('keydown-ESC', this.deleteEscHandler);
+    }
+
+    confirmDeleteFinal() {
+        // Second confirmation dialog - more serious warning
+        this.deleteFinalElements = [];
+
+        // Dark overlay
+        const overlay = this.add.rectangle(GAME_WIDTH / 2, GAME_HEIGHT / 2, GAME_WIDTH, GAME_HEIGHT, 0x000000, 0.9);
+        overlay.setDepth(500);
+        overlay.setInteractive();
+        this.deleteFinalElements.push(overlay);
+
+        // Dialog box - red border pulsing
+        const dialog = this.add.rectangle(GAME_WIDTH / 2, GAME_HEIGHT / 2, 220, 140, 0x331111, 0.95);
+        dialog.setStrokeStyle(3, 0xff0000);
+        dialog.setDepth(501);
+        this.deleteFinalElements.push(dialog);
+
+        // Pulse the dialog border
+        this.tweens.add({
+            targets: dialog,
+            alpha: { from: 0.95, to: 0.8 },
+            duration: 500,
+            yoyo: true,
+            repeat: -1
         });
+
+        // Serious warning text
+        const warning = this.add.text(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 45, '⚠ ARE YOU SURE? ⚠', {
+            fontSize: '14px',
+            fontFamily: 'monospace',
+            color: '#ff0000'
+        }).setOrigin(0.5).setDepth(502);
+        this.deleteFinalElements.push(warning);
+
+        const info = this.add.text(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 15, 'Coins, achievements,\nunlocks will be LOST!\nThis cannot be undone!', {
+            fontSize: '9px',
+            fontFamily: 'monospace',
+            color: '#ff8888',
+            align: 'center'
+        }).setOrigin(0.5).setDepth(502);
+        this.deleteFinalElements.push(info);
+
+        // Buttons
+        const yesBtn = this.add.text(GAME_WIDTH / 2 - 45, GAME_HEIGHT / 2 + 40, '[ DELETE ]', {
+            fontSize: '10px',
+            fontFamily: 'monospace',
+            color: '#ff0000',
+            backgroundColor: '#440000',
+            padding: { x: 6, y: 4 }
+        }).setOrigin(0.5).setDepth(503).setInteractive({ useHandCursor: true });
+        this.deleteFinalElements.push(yesBtn);
+
+        const noBtn = this.add.text(GAME_WIDTH / 2 + 45, GAME_HEIGHT / 2 + 40, '[ CANCEL ]', {
+            fontSize: '10px',
+            fontFamily: 'monospace',
+            color: '#44ff44',
+            backgroundColor: '#113311',
+            padding: { x: 6, y: 4 }
+        }).setOrigin(0.5).setDepth(503).setInteractive({ useHandCursor: true });
+        this.deleteFinalElements.push(noBtn);
+
+        // Hover effects
+        yesBtn.on('pointerover', () => yesBtn.setColor('#ff4444'));
+        yesBtn.on('pointerout', () => yesBtn.setColor('#ff0000'));
+        noBtn.on('pointerover', () => noBtn.setColor('#66ff66'));
+        noBtn.on('pointerout', () => noBtn.setColor('#44ff44'));
+
+        yesBtn.on('pointerdown', () => {
+            this.closeDeleteFinalDialog();
+            this.deleteAllData();
+        });
+
+        noBtn.on('pointerdown', () => {
+            this.closeDeleteFinalDialog();
+        });
+
+        // Keyboard support
+        this.deleteFinalDialogActive = true;
+
+        this.deleteFinalYHandler = () => {
+            if (!this.deleteFinalDialogActive) return;
+            this.closeDeleteFinalDialog();
+            this.deleteAllData();
+        };
+
+        this.deleteFinalNHandler = () => {
+            if (!this.deleteFinalDialogActive) return;
+            this.closeDeleteFinalDialog();
+        };
+
+        this.deleteFinalEscHandler = () => {
+            if (!this.deleteFinalDialogActive) return;
+            this.closeDeleteFinalDialog();
+        };
+
+        this.input.keyboard.on('keydown-Y', this.deleteFinalYHandler);
+        this.input.keyboard.on('keydown-N', this.deleteFinalNHandler);
+        this.input.keyboard.on('keydown-ESC', this.deleteFinalEscHandler);
+    }
+
+    closeDeleteFinalDialog() {
+        this.deleteFinalDialogActive = false;
+
+        // Remove keyboard listeners
+        if (this.deleteFinalYHandler) this.input.keyboard.off('keydown-Y', this.deleteFinalYHandler);
+        if (this.deleteFinalNHandler) this.input.keyboard.off('keydown-N', this.deleteFinalNHandler);
+        if (this.deleteFinalEscHandler) this.input.keyboard.off('keydown-ESC', this.deleteFinalEscHandler);
+
+        this.deleteFinalYHandler = null;
+        this.deleteFinalNHandler = null;
+        this.deleteFinalEscHandler = null;
+
+        if (this.deleteFinalElements) {
+            this.deleteFinalElements.forEach(el => {
+                if (el && el.active) el.destroy();
+            });
+            this.deleteFinalElements = null;
+        }
     }
 
     closeDeleteDialog() {
+        this.deleteDialogActive = false;
+
+        // Remove keyboard listeners
+        if (this.deleteYHandler) this.input.keyboard.off('keydown-Y', this.deleteYHandler);
+        if (this.deleteNHandler) this.input.keyboard.off('keydown-N', this.deleteNHandler);
+        if (this.deleteEscHandler) this.input.keyboard.off('keydown-ESC', this.deleteEscHandler);
+
+        this.deleteYHandler = null;
+        this.deleteNHandler = null;
+        this.deleteEscHandler = null;
+
         if (this.deleteElements) {
             this.deleteElements.forEach(el => {
                 if (el && el.active) el.destroy();
@@ -1598,6 +2021,7 @@ class MenuScene extends Phaser.Scene {
         // Clear all saved data
         localStorage.removeItem('pixelPanicHighScore');
         localStorage.removeItem('pixelPanicShop');
+        localStorage.removeItem('pixelPanicAchievements');
 
         // Reset game state
         window.gameState = {
@@ -1612,9 +2036,21 @@ class MenuScene extends Phaser.Scene {
                 unlockedAreas: ['LOBBY'],
                 unlockedBuildings: ['STARTER'],
                 unlockedParticles: ['DEFAULT'],
+                encounteredMonsters: [],
                 selectedSkin: 'default',
                 selectedParticle: 'DEFAULT',
                 startingArea: 'LOBBY'
+            },
+            achievements: {
+                unlocked: [],
+                stats: {
+                    totalKicks: 0,
+                    totalGames: 0,
+                    totalPowerups: 0,
+                    maxCombo: 0,
+                    maxFloor: 0,
+                    maxScore: 0
+                }
             }
         };
 

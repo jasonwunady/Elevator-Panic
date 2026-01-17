@@ -235,6 +235,11 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.setVelocityY(jumpVelocity);
             this.scene.soundManager.playSound('jump');
 
+            // Track jump achievement
+            if (this.scene.scoreManager) {
+                this.scene.scoreManager.recordJump();
+            }
+
             // Reset touch jump to prevent holding
             this.touchControls.jump = false;
         }
@@ -579,6 +584,11 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         this.health--;
         this.scene.soundManager.playSound('hurt');
+
+        // Track damage achievement
+        if (this.scene.scoreManager) {
+            this.scene.scoreManager.recordDamage();
+        }
 
         // Damage particles
         for (let i = 0; i < 10; i++) {

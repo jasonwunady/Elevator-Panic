@@ -33,6 +33,14 @@ try {
     savedShop = null;
 }
 
+// Load saved achievements data
+let savedAchievements = null;
+try {
+    savedAchievements = JSON.parse(localStorage.getItem('pixelPanicAchievements'));
+} catch (e) {
+    savedAchievements = null;
+}
+
 // Global game state
 window.gameState = {
     highScore: parseInt(localStorage.getItem('pixelPanicHighScore')) || 0,
@@ -72,3 +80,16 @@ if (window.gameState.shop && !window.gameState.shop.unlockedParticles) {
 if (window.gameState.shop && !window.gameState.shop.selectedParticle) {
     window.gameState.shop.selectedParticle = 'DEFAULT';
 }
+
+// Load achievements
+window.gameState.achievements = savedAchievements || {
+    unlocked: [],
+    stats: {
+        totalKicks: 0,
+        totalGames: 0,
+        totalPowerups: 0,
+        maxCombo: 0,
+        maxFloor: 0,
+        maxScore: 0
+    }
+};

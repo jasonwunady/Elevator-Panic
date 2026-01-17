@@ -907,6 +907,9 @@ class GameScene extends Phaser.Scene {
         window.gameState.lastScore = finalScore;
         window.gameState.lastFloor = finalFloor;
 
+        // Finalize achievement stats
+        this.scoreManager.finalizeStats();
+
         // Check high score
         if (finalScore > window.gameState.highScore) {
             window.gameState.highScore = finalScore;
