@@ -3893,7 +3893,9 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
 
     createEyeBeamEffect(direction) {
         if (!this.scene || !this.active) return;
-        const beam = this.scene.add.rectangle(
+
+        const scene = this.scene; // Store reference
+        const beam = scene.add.rectangle(
             this.x + direction * 30,
             this.y,
             60,
@@ -3902,7 +3904,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
             0.8
         );
         beam.setDepth(95);
-        this.scene.tweens.add({
+        scene.tweens.add({
             targets: beam,
             scaleX: 2,
             alpha: 0,
