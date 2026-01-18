@@ -127,7 +127,7 @@ class GameScene extends Phaser.Scene {
         if (!player.active || !powerup.active) return;
 
         powerup.collect(player);
-        this.scoreManager.recordPowerup();
+        // Note: recordPowerup is called in Player.applyPowerup with the type
     }
 
     createUI() {
@@ -886,6 +886,11 @@ class GameScene extends Phaser.Scene {
     gameOver(cause) {
         if (this.isGameOver) return;
         this.isGameOver = true;
+
+        // First Death achievement
+        if (this.scoreManager) {
+            this.scoreManager.checkAchievement('die_once');
+        }
 
         // Stop music
         if (this.music) {

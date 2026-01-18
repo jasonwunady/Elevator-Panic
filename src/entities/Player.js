@@ -641,6 +641,18 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     applyPowerup(type) {
         this.scene.soundManager.playSound('powerup');
 
+        // Record powerup for achievements
+        if (this.scene.scoreManager) {
+            // Convert type to camelCase for achievement mapping
+            const typeMap = {
+                'ROCKET_BOOTS': 'rocketBoots',
+                'STICKY_GLOVES': 'stickyGloves',
+                'FREEZE_FLOOR': 'freezeFloor',
+                'OVERDRIVE': 'overdrive'
+            };
+            this.scene.scoreManager.recordPowerup(typeMap[type] || type);
+        }
+
         switch (type) {
             case 'ROCKET_BOOTS':
                 this.powerups.rocketBoots = true;

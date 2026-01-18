@@ -515,6 +515,11 @@ class Elevator {
         this.currentFloor++;
         this.floorDisplay.setText(`FLOOR ${this.currentFloor}`);
 
+        // Reset door exit tracking for both_doors achievement
+        if (this.scene.scoreManager) {
+            this.scene.scoreManager.resetFloorDoorTracking();
+        }
+
         // Play ding
         this.scene.soundManager.playSound('ding');
 

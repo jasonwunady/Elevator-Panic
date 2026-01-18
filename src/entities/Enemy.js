@@ -661,6 +661,16 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
                 this.setTexture('enemy_ghost');
             }
 
+            // Check for wall kick achievement (hit wall while kicked)
+            if (this.body && !this.hasHitWallWhileKicked) {
+                if (this.body.blocked.left || this.body.blocked.right) {
+                    this.hasHitWallWhileKicked = true;
+                    if (this.scene && this.scene.scoreManager) {
+                        this.scene.scoreManager.checkAchievement('wall_kick');
+                    }
+                }
+            }
+
             // Track kick time for floating enemies
             this.kickedTime = (this.kickedTime || 0) + 16;
 
@@ -684,6 +694,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
                     this.isKicked = false;
                     this.rotation = 0;
                     this.kickedTime = 0;
+                    this.hasHitWallWhileKicked = false;
                     // Restore CLINGER floating gravity
                     if (this.enemyType === 'CLINGER') {
                         this.setGravityY(-150);
@@ -699,6 +710,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
                     this.isKicked = false;
                     this.rotation = 0;
                     this.kickedTime = 0;
+                    this.hasHitWallWhileKicked = false;
                 }
             }
         }
@@ -1002,6 +1014,10 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         // Track first entry
         if (this.isInsideElevator && !this.hasEnteredElevator) {
             this.hasEnteredElevator = true;
+            // Track monster discovery for achievements (when enemy first enters elevator)
+            if (this.scene && this.scene.scoreManager) {
+                this.scene.scoreManager.checkEnemyAchievement(this.enemyType);
+            }
         }
     }
 
@@ -1040,6 +1056,17 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         // Award score
         if (this.scene.scoreManager) {
             this.scene.scoreManager.addKickScore(this);
+
+            // Track door exit achievements
+            if (ejectX < 0) {
+                // Left door exit
+                this.scene.scoreManager.checkAchievement('left_door');
+                this.scene.scoreManager.recordDoorExit('left');
+            } else if (ejectX > GAME_WIDTH) {
+                // Right door exit
+                this.scene.scoreManager.checkAchievement('right_door');
+                this.scene.scoreManager.recordDoorExit('right');
+            }
         }
 
         // Track encountered monster for dictionary unlock
@@ -1364,9 +1391,13 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
     }
 
     spitAtPlayer(player) {
+        if (!this.scene || !this.scene.add) return;
+
+        const scene = this.scene; // Store reference
+
         // Create spit projectile
-        const spit = this.scene.add.sprite(this.x, this.y, 'spit');
-        this.scene.physics.add.existing(spit);
+        const spit = scene.add.sprite(this.x, this.y, 'spit');
+        scene.physics.add.existing(spit);
 
         const angle = Phaser.Math.Angle.Between(this.x, this.y, player.x, player.y);
         spit.body.setVelocity(
@@ -1375,7 +1406,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         );
 
         // Spit damages player on contact
-        this.scene.physics.add.overlap(spit, player, () => {
+        scene.physics.add.overlap(spit, player, () => {
             if (player.active && !player.isInvincible) {
                 player.takeDamage('SPITTER');
                 spit.destroy();
@@ -1383,7 +1414,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         });
 
         // Destroy after time
-        this.scene.time.delayedCall(2000, () => {
+        scene.time.delayedCall(2000, () => {
             if (spit.active) spit.destroy();
         });
     }
@@ -1430,7 +1461,8 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
             this.setVelocityX(direction * this.config.SPEED);
 
             // Float up and down
-            const floatY = Math.sin(this.scene.time.now * 0.003) * 50;
+            const timeNow = (this.scene && this.scene.time) ? this.scene.time.now : 0;
+            const floatY = Math.sin(timeNow * 0.003) * 50;
             if (!this.body.blocked.up && !this.body.blocked.down) {
                 this.setVelocityY(floatY);
             }
@@ -1464,7 +1496,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
 
             // Start charge when cooldown is ready and player is in range
             const dist = Math.abs(player.x - this.x);
-            if (this.chargeCooldown <= 0 && dist < 150 && dist > 30) {
+            if (this.chargeCooldown <= 0 && dist < 150 && dist > 30 && this.scene && this.scene.time) {
                 this.isCharging = true;
                 this.chargeDirection = direction;
                 // Visual warning
@@ -1668,7 +1700,8 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
             });
         }
 
-        this.scene.time.delayedCall(this.config.FREEZE_DURATION, () => {
+        const scene = this.scene; // Store reference
+        scene.time.delayedCall(this.config.FREEZE_DURATION, () => {
             if (player && player.active) {
                 player.isFrozen = false;
                 player.clearTint();
@@ -1767,13 +1800,15 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
 
         // Dash attack
         const dist = Math.abs(player.x - this.x);
-        if (this.dashCooldown <= 0 && dist < 100 && dist > 30) {
+        if (this.dashCooldown <= 0 && dist < 100 && dist > 30 && this.scene && this.scene.time) {
             this.isDashing = true;
             this.setVelocityX(direction * 400);
 
             this.scene.time.delayedCall(200, () => {
-                this.isDashing = false;
-                this.dashCooldown = this.config.DASH_COOLDOWN;
+                if (this.active) {
+                    this.isDashing = false;
+                    this.dashCooldown = this.config.DASH_COOLDOWN;
+                }
             });
         }
     }
@@ -1955,18 +1990,20 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
             if (this.isInvisible) {
                 // Fade out effect
                 this.setTexture('enemy_shadow_fade');
-                for (let i = 0; i < 6; i++) {
-                    const smoke = this.scene.add.circle(
-                        this.x + Phaser.Math.Between(-10, 10),
-                        this.y + Phaser.Math.Between(-10, 10),
-                        Phaser.Math.Between(3, 6), 0x222244, 0.6
-                    );
-                    this.scene.tweens.add({
-                        targets: smoke,
-                        alpha: 0, scale: 2,
-                        duration: 400,
-                        onComplete: () => { if (smoke.active) smoke.destroy(); }
-                    });
+                if (this.scene && this.scene.add) {
+                    for (let i = 0; i < 6; i++) {
+                        const smoke = this.scene.add.circle(
+                            this.x + Phaser.Math.Between(-10, 10),
+                            this.y + Phaser.Math.Between(-10, 10),
+                            Phaser.Math.Between(3, 6), 0x222244, 0.6
+                        );
+                        this.scene.tweens.add({
+                            targets: smoke,
+                            alpha: 0, scale: 2,
+                            duration: 400,
+                            onComplete: () => { if (smoke.active) smoke.destroy(); }
+                        });
+                    }
                 }
             } else {
                 // SURPRISE ATTACK when becoming visible!
@@ -1977,14 +2014,16 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
                     this.setVelocityX(direction * 350);
                     this.setVelocityY(-100);
                     // Shadow slash effect
-                    const slash = this.scene.add.rectangle(this.x + direction * 20, this.y, 40, 8, 0xff00ff, 0.8);
-                    slash.setRotation(direction > 0 ? -0.3 : 0.3);
-                    this.scene.tweens.add({
-                        targets: slash,
-                        x: slash.x + direction * 40, alpha: 0, scaleX: 2,
-                        duration: 200,
-                        onComplete: () => { if (slash.active) slash.destroy(); }
-                    });
+                    if (this.scene && this.scene.add) {
+                        const slash = this.scene.add.rectangle(this.x + direction * 20, this.y, 40, 8, 0xff00ff, 0.8);
+                        slash.setRotation(direction > 0 ? -0.3 : 0.3);
+                        this.scene.tweens.add({
+                            targets: slash,
+                            x: slash.x + direction * 40, alpha: 0, scaleX: 2,
+                            duration: 200,
+                            onComplete: () => { if (slash.active) slash.destroy(); }
+                        });
+                    }
                 }
             }
         }
@@ -2018,7 +2057,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
             player.body.velocity.y += pullY;
 
             // Gravity particles towards enemy
-            if (Math.random() < 0.1) {
+            if (Math.random() < 0.1 && this.scene && this.scene.add) {
                 const p = this.scene.add.circle(player.x, player.y, 2, 0xaa66ff, 0.8);
                 this.scene.tweens.add({
                     targets: p,
@@ -2126,6 +2165,8 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
     }
 
     createSplashAttack(player) {
+        if (!this.scene || !this.scene.add) return;
+
         // Create splash waves on landing
         const splashRadius = this.config.SPLASH_RADIUS;
 
@@ -2185,7 +2226,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
             player.body.velocity.x *= 0.92;
             player.body.velocity.y *= 0.95;
             // Weight visual
-            if (Math.random() < 0.05) {
+            if (Math.random() < 0.05 && this.scene && this.scene.add) {
                 const weight = this.scene.add.rectangle(player.x, player.y + 15, 8, 4, 0x555555, 0.5);
                 this.scene.tweens.add({
                     targets: weight,
@@ -2198,6 +2239,8 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
     }
 
     throwChain(player) {
+        if (!this.scene || !this.scene.add) return;
+
         // Chain visual
         const chain = this.scene.add.line(0, 0, this.x, this.y, player.x, player.y, 0x888888, 1);
         chain.setLineWidth(3);
@@ -2251,32 +2294,43 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
     }
 
     openPortalRift(player) {
+        if (!this.scene || !this.scene.add || !this.scene.elevator) return;
+
+        const scene = this.scene; // Store reference
+
         // Create entry portal at player position
         const entryX = player.x;
         const entryY = player.y;
 
         // Create exit portal near a wall (dangerous position!)
-        const elevator = this.scene.elevator;
+        const elevator = scene.elevator;
         const exitSide = Math.random() < 0.5 ? 'left' : 'right';
         const exitX = exitSide === 'left' ? elevator.leftWall.x + 30 : elevator.rightWall.x - 30;
         const exitY = player.y;
 
         // Entry portal effect
-        const entryPortal = this.scene.add.circle(entryX, entryY, 5, 0xaa44ff, 0.9);
-        this.scene.tweens.add({
+        const entryPortal = scene.add.circle(entryX, entryY, 5, 0xaa44ff, 0.9);
+        scene.tweens.add({
             targets: entryPortal,
             scale: 4, rotation: Math.PI * 2,
             duration: 400,
             onComplete: () => {
+                if (!scene || !scene.add) {
+                    if (entryPortal.active) entryPortal.destroy();
+                    return;
+                }
+
                 // Teleport player!
-                player.x = exitX;
-                player.y = exitY;
+                if (player.active) {
+                    player.x = exitX;
+                    player.y = exitY;
+                }
 
                 // Exit portal effect
                 for (let i = 0; i < 10; i++) {
-                    const p = this.scene.add.circle(exitX, exitY, 3, 0xff66ff, 0.8);
+                    const p = scene.add.circle(exitX, exitY, 3, 0xff66ff, 0.8);
                     const angle = (i / 10) * Math.PI * 2;
-                    this.scene.tweens.add({
+                    scene.tweens.add({
                         targets: p,
                         x: exitX + Math.cos(angle) * 40,
                         y: exitY + Math.sin(angle) * 40,
@@ -2286,7 +2340,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
                     });
                 }
 
-                this.scene.tweens.add({
+                scene.tweens.add({
                     targets: entryPortal,
                     scale: 0, alpha: 0,
                     duration: 200,
@@ -2311,7 +2365,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         }
 
         // Ambient sparks
-        if (Math.random() < 0.05) {
+        if (Math.random() < 0.05 && this.scene && this.scene.add) {
             const spark = this.scene.add.rectangle(
                 this.x + Phaser.Math.Between(-8, 8),
                 this.y + Phaser.Math.Between(-8, 8),
@@ -2328,7 +2382,9 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
     }
 
     createElectricArc(player) {
-        if (player.isInvincible) return;
+        if (player.isInvincible || !this.scene || !this.scene.add) return;
+
+        const scene = this.scene; // Store reference
 
         // Create lightning bolt to player
         const segments = 5;
@@ -2342,11 +2398,11 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
             const jitterX = i < segments - 1 ? Phaser.Math.Between(-15, 15) : 0;
             const jitterY = i < segments - 1 ? Phaser.Math.Between(-10, 10) : 0;
 
-            const bolt = this.scene.add.line(0, 0, lastX, lastY, targetX + jitterX, targetY + jitterY, 0xffff00, 1);
+            const bolt = scene.add.line(0, 0, lastX, lastY, targetX + jitterX, targetY + jitterY, 0xffff00, 1);
             bolt.setLineWidth(3);
             bolt.setDepth(100);
 
-            this.scene.tweens.add({
+            scene.tweens.add({
                 targets: bolt,
                 alpha: 0,
                 duration: 150,
@@ -2361,9 +2417,11 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         // Shock effect on player
         player.takeDamage('ELECTRO');
         player.setTint(0xffff00);
-        this.scene.time.delayedCall(100, () => {
-            if (player.active) player.clearTint();
-        });
+        if (scene.time) {
+            scene.time.delayedCall(100, () => {
+                if (player.active) player.clearTint();
+            });
+        }
     }
 
     // BLOB - Leaves slime trails that slow player and splits when killed
@@ -2575,20 +2633,25 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
                 }
 
                 // End phase and strike!
-                this.scene.time.delayedCall(600, () => {
-                    if (!this.active) return;
-                    this.isPhased = false;
-                    if (this.body) this.body.checkCollision.none = false;
+                const sceneRef = this.scene; // Store reference
+                if (sceneRef && sceneRef.time) {
+                    sceneRef.time.delayedCall(600, () => {
+                        if (!this.active || !sceneRef) return;
+                        this.isPhased = false;
+                        if (this.body) this.body.checkCollision.none = false;
 
-                    // Phase strike!
-                    const strikeRange = 30;
-                    const strikeDist = Phaser.Math.Distance.Between(this.x, this.y, player.x, player.y);
-                    if (strikeDist < strikeRange && !player.isInvincible) {
-                        player.takeDamage('PHASER');
-                        // Glitch damage effect
-                        this.scene.cameras.main.shake(100, 0.01);
-                    }
-                });
+                        // Phase strike!
+                        const strikeRange = 30;
+                        const strikeDist = Phaser.Math.Distance.Between(this.x, this.y, player.x, player.y);
+                        if (strikeDist < strikeRange && !player.isInvincible) {
+                            player.takeDamage('PHASER');
+                            // Glitch damage effect
+                            if (sceneRef.cameras && sceneRef.cameras.main) {
+                                sceneRef.cameras.main.shake(100, 0.01);
+                            }
+                        }
+                    });
+                }
 
                 this.phaseCooldown = this.config.PHASE_COOLDOWN;
             }
@@ -2610,7 +2673,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
             this.setVelocityX(this.chargeDir * 280);
 
             // Dust trail
-            if (Math.random() < 0.3) {
+            if (Math.random() < 0.3 && this.scene && this.scene.add) {
                 const dust = this.scene.add.circle(this.x - this.chargeDir * 10, this.y + 5, 3, 0xdd8844, 0.6);
                 this.scene.tweens.add({
                     targets: dust,
@@ -2625,13 +2688,15 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
                 this.isCharging = false;
                 this.chargeCooldown = 2000;
                 // Stun effect
-                const stars = this.scene.add.text(this.x, this.y - 15, '★★', { fontSize: '10px', color: '#ffff00' }).setOrigin(0.5);
-                this.scene.tweens.add({
-                    targets: stars,
-                    y: stars.y - 10, alpha: 0,
-                    duration: 500,
-                    onComplete: () => { if (stars.active) stars.destroy(); }
-                });
+                if (this.scene && this.scene.add) {
+                    const stars = this.scene.add.text(this.x, this.y - 15, '★★', { fontSize: '10px', color: '#ffff00' }).setOrigin(0.5);
+                    this.scene.tweens.add({
+                        targets: stars,
+                        y: stars.y - 10, alpha: 0,
+                        duration: 500,
+                        onComplete: () => { if (stars.active) stars.destroy(); }
+                    });
+                }
             }
 
             // Hit player = big knockback
@@ -2652,7 +2717,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
 
             // Start charge when ready
             const dist = Math.abs(player.x - this.x);
-            if (this.chargeCooldown <= 0 && dist < 120 && dist > 40) {
+            if (this.chargeCooldown <= 0 && dist < 120 && dist > 40 && this.scene && this.scene.time) {
                 // Wind up
                 this.setTint(0xff4400);
                 this.scene.time.delayedCall(400, () => {
@@ -3285,7 +3350,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.setVelocityX(direction * (this.config.SPEED || 35));
 
         // Sparkle effect
-        if (Math.random() < 0.05) {
+        if (Math.random() < 0.05 && this.scene && this.scene.add) {
             const colors = [0xff6666, 0xffff66, 0x66ff66, 0x66ffff, 0x6666ff, 0xff66ff];
             const sparkle = this.scene.add.circle(
                 this.x + Phaser.Math.Between(-8, 8),
@@ -3307,7 +3372,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.setVelocityX(direction * (this.config.SPEED || 55));
 
         // Leave fire trail
-        if (Math.random() < 0.15) {
+        if (Math.random() < 0.15 && this.scene && this.scene.add) {
             const fire = this.scene.add.circle(this.x, this.y + 8, 4, 0xff6600, 0.7);
             this.scene.tweens.add({
                 targets: fire,
@@ -3333,9 +3398,11 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
 
         // Ground pound when player is close
         const dist = Phaser.Math.Distance.Between(this.x, this.y, player.x, player.y);
-        if (this.body && this.body.blocked.down && dist < 50 && Math.random() < 0.01) {
+        if (this.body && this.body.blocked.down && dist < 50 && Math.random() < 0.01 && this.scene && this.scene.add) {
             // Stomp effect
-            this.scene.cameras.main.shake(100, 0.01);
+            if (this.scene.cameras && this.scene.cameras.main) {
+                this.scene.cameras.main.shake(100, 0.01);
+            }
             for (let i = 0; i < 6; i++) {
                 const debris = this.scene.add.rectangle(
                     this.x + Phaser.Math.Between(-20, 20),
@@ -3559,7 +3626,9 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
                     this.setVelocityX(direction * this.config.SPEED * 3);
                     this.strikeReady = false;
                     if (this.scene && this.scene.time) {
-                        this.scene.time.delayedCall(1000, () => { this.strikeReady = true; });
+                        this.scene.time.delayedCall(1000, () => {
+                            if (this.active) this.strikeReady = true;
+                        });
                     }
                 } else {
                     this.setVelocityX(direction * this.config.SPEED * 0.5);
@@ -3654,8 +3723,10 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
                         this.isCharging = true;
                         this.chargeDirection = direction;
                         this.scene.time.delayedCall(1500, () => {
-                            this.isCharging = false;
-                            this.chargeCooldown = 2000;
+                            if (this.active) {
+                                this.isCharging = false;
+                                this.chargeCooldown = 2000;
+                            }
                         });
                     }
                     this.setVelocityX(direction * this.config.SPEED * 0.5);

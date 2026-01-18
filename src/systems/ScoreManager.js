@@ -31,9 +31,15 @@ class ScoreManager {
                     totalPowerups: 0,
                     maxCombo: 0,
                     maxFloor: 0,
-                    maxScore: 0
+                    maxScore: 0,
+                    discoveredMonsters: []
                 }
             };
+        }
+
+        // Ensure discoveredMonsters array exists (for older saves)
+        if (!window.gameState.achievements.stats.discoveredMonsters) {
+            window.gameState.achievements.stats.discoveredMonsters = [];
         }
 
         // Achievement popup queue
@@ -230,6 +236,7 @@ class ScoreManager {
         if (survivalTime >= 600) this.checkAchievement('survive_10m');
 
         // Powerup achievements
+        if (stats.totalPowerups >= 5) this.checkAchievement('powerups_5');
         if (stats.totalPowerups >= 10) this.checkAchievement('powerups_10');
         if (stats.totalPowerups >= 50) this.checkAchievement('powerups_50');
         if (stats.totalPowerups >= 100) this.checkAchievement('powerups_100');
@@ -251,6 +258,23 @@ class ScoreManager {
     }
 
     checkEnemyAchievement(enemyType) {
+        // Track unique monster discoveries
+        const stats = window.gameState.achievements.stats;
+        if (!stats.discoveredMonsters.includes(enemyType)) {
+            stats.discoveredMonsters.push(enemyType);
+            this.saveAchievements();
+
+            // Check monster discovery achievements
+            const count = stats.discoveredMonsters.length;
+            if (count >= 5) this.checkAchievement('monsters_5');
+            if (count >= 10) this.checkAchievement('monsters_10');
+            if (count >= 25) this.checkAchievement('monsters_25');
+            if (count >= 40) this.checkAchievement('monsters_40');
+            if (count >= 60) this.checkAchievement('monsters_60');
+            if (count >= 80) this.checkAchievement('monsters_80');
+        }
+
+        // Specific enemy encounter achievements
         const enemyAchievementMap = {
             'RUSHER': 'meet_rusher',
             'BOUNCER': 'meet_bouncer',
@@ -287,6 +311,27 @@ class ScoreManager {
         if (powerupAchievementMap[powerupType]) {
             this.checkAchievement(powerupAchievementMap[powerupType]);
         }
+    }
+
+    // Track door exits for both_doors achievement
+    recordDoorExit(door) {
+        // Initialize door tracking for current floor if needed
+        if (!this.floorDoorExits) {
+            this.floorDoorExits = { left: false, right: false };
+        }
+
+        // Record which door was used
+        this.floorDoorExits[door] = true;
+
+        // Check if both doors have been used this floor
+        if (this.floorDoorExits.left && this.floorDoorExits.right) {
+            this.checkAchievement('both_doors');
+        }
+    }
+
+    // Reset door tracking when moving to a new floor
+    resetFloorDoorTracking() {
+        this.floorDoorExits = { left: false, right: false };
     }
 
     addScore(points, showFloatingText = true, x = null, y = null) {
