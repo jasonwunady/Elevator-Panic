@@ -21,7 +21,7 @@ class BootScene extends Phaser.Scene {
         // Load music with error handling - encode URI for special characters
         this.load.audio('levelMusic', ['assets/sounds/last-wave-standing.mp3']);
         this.load.audio('menuMusic', ['assets/sounds/boss-mode-baby.mp3']);
-        this.load.audio('beatsyncMusic', ['assets/sounds/BEATSYNC%20Main%20Menu%20(1).mp3']);
+        this.load.audio('beatsyncMusic', ['assets/sounds/beatsync-main-menu.mp3']);
     }
 
     createLoadingAnimation() {

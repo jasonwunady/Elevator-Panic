@@ -53,6 +53,15 @@ class GameOverScene extends Phaser.Scene {
             });
             this.menuMusic.play();
 
+            // If sound is locked (browser autoplay policy), retry when unlocked
+            if (this.sound.locked) {
+                this.sound.once('unlocked', () => {
+                    if (this.menuMusic && !this.menuMusic.isPlaying) {
+                        this.menuMusic.play();
+                    }
+                });
+            }
+
             // Beat sync - pulse effects to the music beat
             this.beatInterval = 500; // Adjust based on actual BPM of beatsync music
             this.beatTimer = this.time.addEvent({

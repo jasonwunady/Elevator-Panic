@@ -44,6 +44,15 @@ class GameScene extends Phaser.Scene {
             if (this.cache.audio.exists('levelMusic')) {
                 this.music = this.sound.add('levelMusic', { loop: true, volume: 0.5 });
                 this.music.play();
+
+                // If sound is locked (browser autoplay policy), retry when unlocked
+                if (this.sound.locked) {
+                    this.sound.once('unlocked', () => {
+                        if (this.music && !this.music.isPlaying) {
+                            this.music.play();
+                        }
+                    });
+                }
             }
         } catch (e) {
             console.warn('Could not play level music:', e);

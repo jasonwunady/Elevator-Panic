@@ -15,6 +15,9 @@ const config = {
             debug: false
         }
     },
+    audio: {
+        disableWebAudio: false
+    },
     scale: {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH
